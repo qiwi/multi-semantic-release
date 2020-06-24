@@ -25,7 +25,7 @@ describe("multiSemanticRelease()", () => {
 	test("Initial commit (changes in all packages)", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
 		const sha = gitCommitAll(cwd, "feat: Initial release");
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
@@ -38,12 +38,7 @@ describe("multiSemanticRelease()", () => {
 		// Doesn't include plugins that actually publish.
 		const multiSemanticRelease = require("../../");
 		const result = await multiSemanticRelease(
-			[
-				`packages/a/package.json`,
-				`packages/b/package.json`,
-				`packages/c/package.json`,
-				`packages/d/package.json`,
-			],
+			[`apps/c/package.json`, `apps/d/package.json`, `libs/a/package.json`, `libs/b/package.json`],
 			{},
 			{ cwd, stdout, stderr }
 		);
@@ -65,69 +60,69 @@ describe("multiSemanticRelease()", () => {
 		expect(out).toMatch("Released 4 of 4 packages, semantically!");
 
 		// A.
-		expect(result[0].name).toBe("msr-test-a");
-		expect(result[0].result.lastRelease).toEqual({});
-		expect(result[0].result.nextRelease).toMatchObject({
+		expect(result[2].name).toBe("msr-test-a");
+		expect(result[2].result.lastRelease).toEqual({});
+		expect(result[2].result.nextRelease).toMatchObject({
 			gitHead: sha,
 			gitTag: "msr-test-a@1.0.0",
 			type: "minor",
 			version: "1.0.0",
 		});
-		expect(result[0].result.nextRelease.notes).toMatch("# msr-test-a 1.0.0");
-		expect(result[0].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
-		expect(result[0].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.0");
+		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-a 1.0.0");
+		expect(result[2].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
+		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.0");
 
 		// B.
-		expect(result[1].name).toBe("msr-test-b");
-		expect(result[1].result.lastRelease).toEqual({});
-		expect(result[1].result.nextRelease).toMatchObject({
+		expect(result[3].name).toBe("msr-test-b");
+		expect(result[3].result.lastRelease).toEqual({});
+		expect(result[3].result.nextRelease).toMatchObject({
 			gitHead: sha,
 			gitTag: "msr-test-b@1.0.0",
 			type: "minor",
 			version: "1.0.0",
 		});
-		expect(result[1].result.nextRelease.notes).toMatch("# msr-test-b 1.0.0");
-		expect(result[1].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
-		expect(result[1].result.nextRelease.notes).toMatch(
+		expect(result[3].result.nextRelease.notes).toMatch("# msr-test-b 1.0.0");
+		expect(result[3].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
+		expect(result[3].result.nextRelease.notes).toMatch(
 			"### Dependencies\n\n* **msr-test-a:** upgraded to 1.0.0\n* **msr-test-c:** upgraded to 1.0.0"
 		);
 
 		// C.
-		expect(result[2].name).toBe("msr-test-c");
-		expect(result[2].result.lastRelease).toEqual({});
-		expect(result[2].result.nextRelease).toMatchObject({
+		expect(result[0].name).toBe("msr-test-c");
+		expect(result[0].result.lastRelease).toEqual({});
+		expect(result[0].result.nextRelease).toMatchObject({
 			gitHead: sha,
 			gitTag: "msr-test-c@1.0.0",
 			type: "minor",
 			version: "1.0.0",
 		});
-		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-c 1.0.0");
-		expect(result[2].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
-		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.0");
+		expect(result[0].result.nextRelease.notes).toMatch("# msr-test-c 1.0.0");
+		expect(result[0].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
+		expect(result[0].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.0");
 
 		// D.
-		expect(result[3].name).toBe("msr-test-d");
-		expect(result[3].result.lastRelease).toEqual({});
-		expect(result[3].result.nextRelease).toMatchObject({
+		expect(result[1].name).toBe("msr-test-d");
+		expect(result[1].result.lastRelease).toEqual({});
+		expect(result[1].result.nextRelease).toMatchObject({
 			gitHead: sha,
 			gitTag: "msr-test-d@1.0.0",
 			type: "minor",
 			version: "1.0.0",
 		});
-		expect(result[3].result.nextRelease.notes).toMatch("# msr-test-d 1.0.0");
-		expect(result[3].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
-		expect(result[3].result.nextRelease.notes).not.toMatch("### Dependencies");
+		expect(result[1].result.nextRelease.notes).toMatch("# msr-test-d 1.0.0");
+		expect(result[1].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
+		expect(result[1].result.nextRelease.notes).not.toMatch("### Dependencies");
 
 		// ONLY four times.
 		expect(result).toHaveLength(4);
 
 		// Check manifests.
-		expect(require(`${cwd}/packages/a/package.json`)).toMatchObject({
+		expect(require(`${cwd}/libs/a/package.json`)).toMatchObject({
 			peerDependencies: {
 				"msr-test-c": "1.0.0",
 			},
 		});
-		expect(require(`${cwd}/packages/b/package.json`)).toMatchObject({
+		expect(require(`${cwd}/libs/b/package.json`)).toMatchObject({
 			dependencies: {
 				"msr-test-a": "1.0.0",
 			},
@@ -135,7 +130,7 @@ describe("multiSemanticRelease()", () => {
 				"msr-test-c": "1.0.0",
 			},
 		});
-		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
+		expect(require(`${cwd}/apps/c/package.json`)).toMatchObject({
 			devDependencies: {
 				"msr-test-b": "1.0.0",
 				"msr-test-d": "1.0.0",
@@ -145,7 +140,7 @@ describe("multiSemanticRelease()", () => {
 	test("No changes in any packages", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
 		const sha = gitCommitAll(cwd, "feat: Initial release");
 		// Creating the four tags so there are no changes in any packages.
 		gitTag(cwd, "msr-test-a@1.0.0");
@@ -163,12 +158,7 @@ describe("multiSemanticRelease()", () => {
 		// Doesn't include plugins that actually publish.
 		const multiSemanticRelease = require("../../");
 		const result = await multiSemanticRelease(
-			[
-				`packages/c/package.json`,
-				`packages/a/package.json`,
-				`packages/d/package.json`,
-				`packages/b/package.json`,
-			],
+			[`apps/c/package.json`, `apps/d/package.json`, `libs/a/package.json`, `libs/b/package.json`],
 			{},
 			{ cwd, stdout, stderr }
 		);
@@ -198,14 +188,14 @@ describe("multiSemanticRelease()", () => {
 		// Create Git repo.
 		const cwd = gitInit();
 		// Initial commit.
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
 		const sha1 = gitCommitAll(cwd, "feat: Initial release");
 		gitTag(cwd, "msr-test-a@1.0.0");
 		gitTag(cwd, "msr-test-b@1.0.0");
 		gitTag(cwd, "msr-test-c@1.0.0");
 		gitTag(cwd, "msr-test-d@1.0.0");
 		// Second commit.
-		writeFileSync(`${cwd}/packages/a/aaa.txt`, "AAA");
+		writeFileSync(`${cwd}/libs/a/aaa.txt`, "AAA");
 		const sha2 = gitCommitAll(cwd, "feat(aaa): Add missing text file");
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
@@ -218,12 +208,7 @@ describe("multiSemanticRelease()", () => {
 		// Doesn't include plugins that actually publish.
 		const multiSemanticRelease = require("../../");
 		const result = await multiSemanticRelease(
-			[
-				`packages/c/package.json`,
-				`packages/d/package.json`,
-				`packages/b/package.json`,
-				`packages/a/package.json`,
-			],
+			[`apps/c/package.json`, `apps/d/package.json`, `libs/a/package.json`, `libs/b/package.json`],
 			{},
 			{ cwd, stdout, stderr }
 		);
@@ -245,41 +230,41 @@ describe("multiSemanticRelease()", () => {
 		expect(out).toMatch("Released 3 of 4 packages, semantically!");
 
 		// A.
-		expect(result[3].name).toBe("msr-test-a");
-		expect(result[3].result.lastRelease).toMatchObject({
+		expect(result[2].name).toBe("msr-test-a");
+		expect(result[2].result.lastRelease).toMatchObject({
 			gitHead: sha1,
 			gitTag: "msr-test-a@1.0.0",
 			version: "1.0.0",
 		});
-		expect(result[3].result.nextRelease).toMatchObject({
+		expect(result[2].result.nextRelease).toMatchObject({
 			gitHead: sha2,
 			gitTag: "msr-test-a@1.1.0",
 			type: "minor",
 			version: "1.1.0",
 		});
-		expect(result[3].result.nextRelease.notes).toMatch("# msr-test-a [1.1.0]");
-		expect(result[3].result.nextRelease.notes).toMatch("### Features\n\n* **aaa:** Add missing text file");
-		expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
+		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-a [1.1.0]");
+		expect(result[2].result.nextRelease.notes).toMatch("### Features\n\n* **aaa:** Add missing text file");
+		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
 
 		// B.
-		expect(result[2].name).toBe("msr-test-b");
-		expect(result[2].result.lastRelease).toEqual({
+		expect(result[3].name).toBe("msr-test-b");
+		expect(result[3].result.lastRelease).toEqual({
 			channels: [null],
 			gitHead: sha1,
 			gitTag: "msr-test-b@1.0.0",
 			name: "msr-test-b@1.0.0",
 			version: "1.0.0",
 		});
-		expect(result[2].result.nextRelease).toMatchObject({
+		expect(result[3].result.nextRelease).toMatchObject({
 			gitHead: sha2,
 			gitTag: "msr-test-b@1.0.1",
 			type: "patch",
 			version: "1.0.1",
 		});
-		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-b [1.0.1]");
-		expect(result[2].result.nextRelease.notes).not.toMatch("### Features");
-		expect(result[2].result.nextRelease.notes).not.toMatch("### Bug Fixes");
-		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-a:** upgraded to 1.1.0");
+		expect(result[3].result.nextRelease.notes).toMatch("# msr-test-b [1.0.1]");
+		expect(result[3].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result[3].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-a:** upgraded to 1.1.0");
 
 		// C.
 		expect(result[0].name).toBe("msr-test-c");
@@ -309,12 +294,12 @@ describe("multiSemanticRelease()", () => {
 		expect(result[4]).toBe(undefined);
 
 		// Check manifests.
-		expect(require(`${cwd}/packages/a/package.json`)).toMatchObject({
+		expect(require(`${cwd}/libs/a/package.json`)).toMatchObject({
 			peerDependencies: {
 				"msr-test-c": "1.0.1",
 			},
 		});
-		expect(require(`${cwd}/packages/b/package.json`)).toMatchObject({
+		expect(require(`${cwd}/libs/b/package.json`)).toMatchObject({
 			dependencies: {
 				"msr-test-a": "1.1.0",
 			},
@@ -322,7 +307,7 @@ describe("multiSemanticRelease()", () => {
 				"msr-test-c": "1.0.1",
 			},
 		});
-		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
+		expect(require(`${cwd}/apps/c/package.json`)).toMatchObject({
 			devDependencies: {
 				"msr-test-b": "1.0.1",
 				"msr-test-d": "1.0.0",
@@ -388,8 +373,8 @@ describe("multiSemanticRelease()", () => {
 	test("Error if release's local deps have no version number", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
-		gitAdd(cwd, "packages/a/package.json");
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
+		gitAdd(cwd, "libs/a/package.json");
 		const sha = gitCommit(cwd, "feat: Commit first package only");
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
@@ -402,7 +387,7 @@ describe("multiSemanticRelease()", () => {
 		try {
 			const multiSemanticRelease = require("../../");
 			const result = await multiSemanticRelease(
-				[`packages/a/package.json`, `packages/c/package.json`],
+				[`libs/a/package.json`, `apps/c/package.json`],
 				{},
 				{ cwd, stdout, stderr }
 			);
@@ -416,7 +401,7 @@ describe("multiSemanticRelease()", () => {
 	test("Configured plugins are called as normal", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
 		const sha = gitCommitAll(cwd, "feat: Initial release");
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
@@ -439,7 +424,7 @@ describe("multiSemanticRelease()", () => {
 		// Call multiSemanticRelease()
 		const multiSemanticRelease = require("../../");
 		const result = await multiSemanticRelease(
-			[`packages/d/package.json`],
+			[`apps/d/package.json`],
 			{
 				// Override to add our own plugins.
 				plugins: ["@semantic-release/release-notes-generator", plugin],
@@ -460,7 +445,7 @@ describe("multiSemanticRelease()", () => {
 	test("Deep errors (e.g. in plugins) bubble up and out", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
 		const sha = gitCommitAll(cwd, "feat: Initial release");
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
@@ -476,7 +461,7 @@ describe("multiSemanticRelease()", () => {
 		// Doesn't include plugins that actually publish.
 		try {
 			await multiSemanticRelease(
-				[`packages/d/package.json`, `packages/a/package.json`],
+				[`apps/d/package.json`, `libs/a/package.json`],
 				{
 					// Override to add our own erroring plugin.
 					plugins: [

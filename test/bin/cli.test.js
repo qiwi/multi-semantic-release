@@ -1,22 +1,13 @@
 const execa = require("execa");
 const { copyDirectory } = require("../helpers/file");
-const {
-	gitInit,
-	gitAdd,
-	gitCommit,
-	gitCommitAll,
-	gitInitOrigin,
-	gitPush,
-	gitTag,
-	gitGetTags,
-} = require("../helpers/git");
+const { gitInit, gitCommitAll, gitInitOrigin, gitPush } = require("../helpers/git");
 
 // Tests.
 describe("multi-semantic-release CLI", () => {
 	test("Initial commit (changes in all packages)", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		copyDirectory(`test/fixtures/nxWorkspaces/`, cwd);
 		const sha = gitCommitAll(cwd, "feat: Initial release");
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);

@@ -1,0 +1,19 @@
+{
+	"projects": {
+		"c": {
+		  "root": "apps/c"
+		},
+		"d": {
+		  "root": "apps/d"
+		},
+	  "c-e2e": {
+		"root": "apps/c-e2e"
+	  },
+	  "a": {
+		"root": "libs/a"
+	  },
+	  "b": {
+		"root": "libs/b"
+	  }
+	}
+}
