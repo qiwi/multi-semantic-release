@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/qiwi/multi-semantic-release/compare/v3.6.0...v3.7.0) (2020-07-24)
+
+
+### Features
+
+* log filtered commits in debug ([c64b8e1](https://github.com/qiwi/multi-semantic-release/commit/c64b8e1a4e97b7164b80f267d631dbccb459a64d))
+
 # [3.6.0](https://github.com/qiwi/multi-semantic-release/compare/v3.5.1...v3.6.0) (2020-07-21)
 
 
