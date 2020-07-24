@@ -1,3 +1,10 @@
+# [3.8.0](https://github.com/qiwi/multi-semantic-release/compare/v3.7.0...v3.8.0) (2020-07-24)
+
+
+### Features
+
+* enable first-parent commits filtering by cli flag ([33306cc](https://github.com/qiwi/multi-semantic-release/commit/33306cce3e6e7d118a74690ecf3b33ac4154eac9))
+
 # [3.7.0](https://github.com/qiwi/multi-semantic-release/compare/v3.6.0...v3.7.0) (2020-07-24)
 
 
