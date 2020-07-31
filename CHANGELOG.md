@@ -1,3 +1,10 @@
+## [3.8.1](https://github.com/qiwi/multi-semantic-release/compare/v3.8.0...v3.8.1) (2020-07-31)
+
+
+### Bug Fixes
+
+* fix internal flag ref filterParent → firstParent ([8c7400f](https://github.com/qiwi/multi-semantic-release/commit/8c7400fe2f639f5d7abfc9219efb1b331c585fc8))
+
 # [3.8.0](https://github.com/qiwi/multi-semantic-release/compare/v3.7.0...v3.8.0) (2020-07-24)
 
 
