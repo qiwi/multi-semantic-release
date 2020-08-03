@@ -1,3 +1,10 @@
+## [3.8.2](https://github.com/qiwi/multi-semantic-release/compare/v3.8.1...v3.8.2) (2020-08-03)
+
+
+### Bug Fixes
+
+* process optional deps during manifest update ([4b7066c](https://github.com/qiwi/multi-semantic-release/commit/4b7066c9b78169638baed7f7faefbbcd3705f5a4))
+
 ## [3.8.1](https://github.com/qiwi/multi-semantic-release/compare/v3.8.0...v3.8.1) (2020-07-31)
 
 
