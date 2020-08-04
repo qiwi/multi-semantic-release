@@ -1,3 +1,10 @@
+## [3.8.3](https://github.com/qiwi/multi-semantic-release/compare/v3.8.2...v3.8.3) (2020-08-04)
+
+
+### Bug Fixes
+
+* preserve trailing whitespace in manifest ([06426ec](https://github.com/qiwi/multi-semantic-release/commit/06426ec05f04cdcdf1561a4d1220890cf8ab1421))
+
 ## [3.8.2](https://github.com/qiwi/multi-semantic-release/compare/v3.8.1...v3.8.2) (2020-08-03)
 
 
