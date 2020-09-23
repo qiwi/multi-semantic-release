@@ -1,3 +1,10 @@
+## [3.8.4](https://github.com/qiwi/multi-semantic-release/compare/v3.8.3...v3.8.4) (2020-09-23)
+
+
+### Bug Fixes
+
+* **package:** up deps, fix vulns ([5a4d91e](https://github.com/qiwi/multi-semantic-release/commit/5a4d91e879397acc0d8b08af6337817f66491739))
+
 ## [3.8.3](https://github.com/qiwi/multi-semantic-release/compare/v3.8.2...v3.8.3) (2020-08-04)
 
 
