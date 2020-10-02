@@ -55,6 +55,10 @@
 		"bash-glob": "^2.0.0",
 		"blork": "^9.2.2",
 		"cosmiconfig": "^7.0.0",
+		"debug": "^4.2.0",
+		"detect-indent": "^6.0.0",
+		"detect-newline": "^3.1.0",
+		"execa": "^4.0.3",
 		"get-stream": "^6.0.0",
 		"git-log-parser": "^1.2.0",
 		"lodash": "^4.17.20",
@@ -64,8 +68,7 @@
 		"semver": "^7.3.2",
 		"signale": "^1.4.0",
 		"stream-buffers": "^3.0.2",
-		"tempy": "^0.7.0",
-		"execa": "^4.0.3"
+		"tempy": "^0.7.0"
 	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^11.0.0",
