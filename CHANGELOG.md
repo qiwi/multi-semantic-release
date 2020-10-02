@@ -1,3 +1,10 @@
+## [3.8.5](https://github.com/qiwi/multi-semantic-release/compare/v3.8.4...v3.8.5) (2020-10-02)
+
+
+### Bug Fixes
+
+* specify used but forgotten dependencies ([73def7f](https://github.com/qiwi/multi-semantic-release/commit/73def7f4dcfccf12c9cf3a0d998889ea1cd53b10))
+
 ## [3.8.4](https://github.com/qiwi/multi-semantic-release/compare/v3.8.3...v3.8.4) (2020-09-23)
 
 
