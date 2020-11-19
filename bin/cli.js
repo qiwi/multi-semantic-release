@@ -13,7 +13,7 @@ const cli = meow(
     --sequential-init  Avoid hypothetical concurrent initialization collisions.
     --first-parent Apply commit filtering to current branch only.
     --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
-    --deps.release Define release type for dependant package if any of its deps changes. Supported values: patch, minor, major, inherit.
+    --deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
     --help Help info.
 
   Examples
