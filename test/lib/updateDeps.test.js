@@ -62,7 +62,7 @@ describe("resolveReleaseType()", () => {
 			"major"
 		],
 		[
-			"overrides dependant release type with custom value if defined",
+			"overrides dependent release type with custom value if defined",
 			{
 				manifest: { dependencies: { a: "1.0.0" } },
 				_nextType: undefined,
