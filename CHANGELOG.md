@@ -1,3 +1,10 @@
+## [3.9.1](https://github.com/qiwi/multi-semantic-release/compare/v3.9.0...v3.9.1) (2020-11-21)
+
+
+### Performance Improvements
+
+* **package:** up deps ([506a0e8](https://github.com/qiwi/multi-semantic-release/commit/506a0e80d9152427eb8dca5c9032754fce4e8a22))
+
 # [3.9.0](https://github.com/qiwi/multi-semantic-release/compare/v3.8.5...v3.9.0) (2020-11-21)
 
 
