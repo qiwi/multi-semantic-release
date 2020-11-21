@@ -1,3 +1,15 @@
+# [3.9.0](https://github.com/qiwi/multi-semantic-release/compare/v3.8.5...v3.9.0) (2020-11-21)
+
+
+### Bug Fixes
+
+* sync pkg version after running the npm plugin ([1d24e45](https://github.com/qiwi/multi-semantic-release/commit/1d24e45c7ebba1b6b97ef259e98ea17fbb5d9d35))
+
+
+### Features
+
+* add dependencies updating controller ([0c9b040](https://github.com/qiwi/multi-semantic-release/commit/0c9b0406c35cedb264ac321805da4e93b9f2d5d8))
+
 ## [3.8.5](https://github.com/qiwi/multi-semantic-release/compare/v3.8.4...v3.8.5) (2020-10-02)
 
 
