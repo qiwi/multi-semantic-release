@@ -1,3 +1,10 @@
+## [3.9.5](https://github.com/qiwi/multi-semantic-release/compare/v3.9.4...v3.9.5) (2020-11-23)
+
+
+### Bug Fixes
+
+* fix getNextVersion resolver ([7275ae7](https://github.com/qiwi/multi-semantic-release/commit/7275ae75799ad3cb3bca34c9cfa2978fed092794))
+
 ## [3.9.4](https://github.com/qiwi/multi-semantic-release/compare/v3.9.3...v3.9.4) (2020-11-23)
 
 
