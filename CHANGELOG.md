@@ -1,3 +1,10 @@
+## [3.9.4](https://github.com/qiwi/multi-semantic-release/compare/v3.9.3...v3.9.4) (2020-11-23)
+
+
+### Bug Fixes
+
+* apply deps update before npm's plugin prepare ([77b6ee2](https://github.com/qiwi/multi-semantic-release/commit/77b6ee2e8d1a281d359520fe12e548ea79776b5e))
+
 ## [3.9.3](https://github.com/qiwi/multi-semantic-release/compare/v3.9.2...v3.9.3) (2020-11-23)
 
 
