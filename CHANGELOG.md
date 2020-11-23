@@ -1,3 +1,10 @@
+## [3.9.3](https://github.com/qiwi/multi-semantic-release/compare/v3.9.2...v3.9.3) (2020-11-23)
+
+
+### Bug Fixes
+
+* trigger next pkg `prepare` after the prev `publish` ([f74d185](https://github.com/qiwi/multi-semantic-release/commit/f74d185c268567585393b977817ab69f3225532a))
+
 ## [3.9.2](https://github.com/qiwi/multi-semantic-release/compare/v3.9.1...v3.9.2) (2020-11-23)
 
 
