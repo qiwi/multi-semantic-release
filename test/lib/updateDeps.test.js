@@ -11,6 +11,8 @@ describe("resolveNextVersion()", () => {
 		["^1.2.0", "1.3.0", "satisfy", "^1.2.0"],
 		["1.2.x", "1.2.2", "satisfy", "1.2.x"],
 
+		["~1.0.0", "1.1.0", "inherit", "~1.1.0"],
+		["1.2.x", "1.2.1", "inherit", "1.2.x"],
 		["1.2.x", "1.3.0", "inherit", "1.3.x"],
 		["^1.0.0", "2.0.0", "inherit", "^2.0.0"],
 		["*", "2.0.0", "inherit", "*"],
@@ -32,7 +34,7 @@ describe("resolveReleaseType()", () => {
 			"returns own package's _nextType if exists",
 			{
 				_nextType: "patch",
-				_localDeps: [],
+				localDeps: [],
 			},
 			undefined,
 			undefined,
@@ -43,16 +45,16 @@ describe("resolveReleaseType()", () => {
 			{
 				manifest: { dependencies: { a: "1.0.0" } },
 				_nextType: undefined,
-				_localDeps: [
+				localDeps: [
 					{
 						name: "a",
 						manifest: { dependencies: { b: "1.0.0", c: "1.0.0", d: "1.0.0" } },
 						_lastRelease: { version: "1.0.0" },
 						_nextType: false,
-						_localDeps: [
-							{ name: "b", _nextType: false, _localDeps: [], _lastRelease: { version: "1.0.0" }  },
-							{ name: "c", _nextType: "patch", _localDeps: [], _lastRelease: { version: "1.0.0" }  },
-							{ name: "d", _nextType: "major", _localDeps: [], _lastRelease: { version: "1.0.0" }  },
+						localDeps: [
+							{ name: "b", _nextType: false, localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "c", _nextType: "patch", localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "d", _nextType: "major", localDeps: [], _lastRelease: { version: "1.0.0" }  },
 						],
 					},
 				],
@@ -66,16 +68,16 @@ describe("resolveReleaseType()", () => {
 			{
 				manifest: { dependencies: { a: "1.0.0" } },
 				_nextType: undefined,
-				_localDeps: [
+				localDeps: [
 					{
 						name: "a",
 						// _lastRelease: { version: "1.0.0" },
 						manifest: { dependencies: { b: "1.0.0", c: "1.0.0", d: "1.0.0" } },
 						_nextType: false,
-						_localDeps: [
-							{ name: "b", _nextType: false, _localDeps: [], _lastRelease: { version: "1.0.0" }  },
-							{ name: "c", _nextType: "minor", _localDeps: [], _lastRelease: { version: "1.0.0" }  },
-							{ name: "d", _nextType: "patch", _localDeps: [], _lastRelease: { version: "1.0.0" }  },
+						localDeps: [
+							{ name: "b", _nextType: false, localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "c", _nextType: "minor", localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "d", _nextType: "patch", localDeps: [], _lastRelease: { version: "1.0.0" }  },
 						],
 					},
 				],
@@ -89,16 +91,16 @@ describe("resolveReleaseType()", () => {
 			{
 				manifest: { dependencies: { a: "1.0.0" } },
 				_nextType: undefined,
-				_localDeps: [
+				localDeps: [
 					{
 						name: "a",
 						_nextType: false,
 						//_lastRelease: { version: "1.0.0" },
 						manifest: { dependencies: { b: "1.0.0", c: "1.0.0", d: "1.0.0" } },
-						_localDeps: [
-							{ name: "b", _nextType: false, _localDeps: [], _lastRelease: { version: "1.0.0" }  },
-							{ name: "c", _nextType: "minor", _localDeps: [], _lastRelease: { version: "1.0.0" }  },
-							{ name: "d", _nextType: "major", _localDeps: [], _lastRelease: { version: "1.0.0" }  },
+						localDeps: [
+							{ name: "b", _nextType: false, localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "c", _nextType: "minor", localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "d", _nextType: "major", localDeps: [], _lastRelease: { version: "1.0.0" }  },
 						],
 					},
 				],
@@ -111,15 +113,15 @@ describe("resolveReleaseType()", () => {
 			"returns undefined if no _nextRelease found",
 			{
 				_nextType: undefined,
-				_localDeps: [
+				localDeps: [
 					{
 						_nextType: false,
-						_localDeps: [
-							{ _nextType: false, _localDeps: [] },
+						localDeps: [
+							{ _nextType: false, localDeps: [] },
 							{
 								_nextType: undefined,
-								_localDeps: [
-									{ _nextType: undefined, _localDeps: [] }
+								localDeps: [
+									{ _nextType: undefined, localDeps: [] }
 								]
 							},
 						],
