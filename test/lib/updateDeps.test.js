@@ -167,14 +167,14 @@ describe("getNextVersion()", () => {
 describe("getNextPreVersion()", () => {
 	// prettier-ignore
 	const cases = [
-		[undefined, "patch", "1.0.0-rc.1", "rc"],
-		[undefined, "patch", "1.0.0-rc.1", "rc"],
-		["1.0.0-rc.0", "minor", "1.0.0-dev.0", "dev"],
-		["1.0.0-dev.0", "major", "1.0.0-dev.1", "dev"],
+		[undefined, "patch", "rc", "1.0.0-rc.1"],
+		[undefined, "patch", "rc", "1.0.0-rc.1"],
+		["1.0.0-rc.0", "minor", "dev", "1.0.0-dev.0"],
+		["1.0.0-dev.0", "major", "dev", "1.0.0-dev.1"],
 		
 	]
 
-	cases.forEach(([lastVersion, releaseType, nextVersion, preRelease]) => {
+	cases.forEach(([lastVersion, releaseType, preRelease, nextVersion]) => {
 		it(`${lastVersion} and ${releaseType} gives ${nextVersion}`, () => {
 			// prettier-ignore
 			expect(getNextPreVersion({
