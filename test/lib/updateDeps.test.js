@@ -144,17 +144,25 @@ describe("resolveReleaseType()", () => {
 describe("getNextVersion()", () => {
 	// prettier-ignore
 	const cases = [
-		[undefined, "patch", "1.0.0"],
-		["1.0.0", "patch", "1.0.1"],
-		["2.0.0", undefined, "2.0.0"],
+		[undefined, "patch", "1.0.0", null],
+		["1.0.0", "patch", "1.0.1", null],
+		["2.0.0", undefined, "2.0.0", null],
+		[undefined, "patch", "1.0.0-rc.1", "rc"],
+		["1.0.0-rc.0", "minor", "1.0.0-dev.0", "dev"],
+		["1.0.0-dev.0", "major", "1.0.0-dev.1", "dev"],
+		["1.0.0-dev.1", "major", "1.0.0", null],
+		["1.0.0-dev.1", undefined, "1.0.0-dev.1", null],
+		["1.0.0-dev.1", "minor", "1.0.0", null],
+		["1.0.0-dev.1", "patch", "1.0.0", null],
 	]
 
-	cases.forEach(([lastVersion, releaseType, nextVersion]) => {
+	cases.forEach(([lastVersion, releaseType, nextVersion, preRelease]) => {
 		it(`${lastVersion} and ${releaseType} gives ${nextVersion}`, () => {
 			// prettier-ignore
 			expect(getNextVersion({
 				_nextType: releaseType,
-				_lastRelease: {version: lastVersion}
+				_lastRelease: {version: lastVersion},
+				_preRelease: preRelease
 			})).toBe(nextVersion);
 		});
 	});
