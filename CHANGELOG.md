@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/qiwi/multi-semantic-release/compare/v3.9.5...v3.10.0) (2020-12-23)
+
+
+### Features
+
+* provide pre-release flow ([6a9ce16](https://github.com/qiwi/multi-semantic-release/commit/6a9ce165c44aba3b8ef787cdfa575ad8b0dc3f05)), closes [#25](https://github.com/qiwi/multi-semantic-release/issues/25)
+
 ## [3.9.5](https://github.com/qiwi/multi-semantic-release/compare/v3.9.4...v3.9.5) (2020-11-23)
 
 
