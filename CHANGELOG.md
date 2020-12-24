@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/qiwi/multi-semantic-release/compare/v3.10.0...v3.11.0) (2020-12-24)
+
+
+### Features
+
+* **debug:** log manifest deps changes ([88b4077](https://github.com/qiwi/multi-semantic-release/commit/88b40770d2cdaaf30912745f4fc4eee44357d9ea)), closes [#27](https://github.com/qiwi/multi-semantic-release/issues/27)
+
 # [3.10.0](https://github.com/qiwi/multi-semantic-release/compare/v3.9.5...v3.10.0) (2020-12-23)
 
 
