@@ -1,3 +1,10 @@
+## [3.11.1](https://github.com/qiwi/multi-semantic-release/compare/v3.11.0...v3.11.1) (2020-12-28)
+
+
+### Bug Fixes
+
+* fix pkgOptions resolver ([2a2f0cf](https://github.com/qiwi/multi-semantic-release/commit/2a2f0cf43888f2d6acfc174f12993948947f0111))
+
 # [3.11.0](https://github.com/qiwi/multi-semantic-release/compare/v3.10.0...v3.11.0) (2020-12-24)
 
 
