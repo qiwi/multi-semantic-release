@@ -786,6 +786,7 @@ describe("multiSemanticRelease()", () => {
 			expect(false).toBe(true);
 		} catch (e) {
 			// Error bubbles up through semantic-release and multi-semantic-release and out.
+
 			expect(e.message).toBe("NOPE");
 		}
 	});
