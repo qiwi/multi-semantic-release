@@ -1,3 +1,10 @@
+## [3.11.2](https://github.com/qiwi/multi-semantic-release/compare/v3.11.1...v3.11.2) (2020-12-29)
+
+
+### Bug Fixes
+
+* **config:** fix `options` and `plugins` resolver ([56e974c](https://github.com/qiwi/multi-semantic-release/commit/56e974cec12f47d50f967d681506a84418b4e6bb))
+
 ## [3.11.1](https://github.com/qiwi/multi-semantic-release/compare/v3.11.0...v3.11.1) (2020-12-28)
 
 
