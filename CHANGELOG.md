@@ -1,3 +1,38 @@
+# [3.12.0](https://github.com/qiwi/multi-semantic-release/compare/v3.11.2...v3.12.0) (2020-12-30)
+
+
+### Features
+
+* **debug:** attach pkg prefixes to debug notes ([25e111f](https://github.com/qiwi/multi-semantic-release/commit/25e111f4b85e20c06d518abc1245918788f730a5))
+
+## [3.11.2](https://github.com/qiwi/multi-semantic-release/compare/v3.11.1...v3.11.2) (2020-12-29)
+
+
+### Bug Fixes
+
+* **config:** fix `options` and `plugins` resolver ([56e974c](https://github.com/qiwi/multi-semantic-release/commit/56e974cec12f47d50f967d681506a84418b4e6bb))
+
+## [3.11.1](https://github.com/qiwi/multi-semantic-release/compare/v3.11.0...v3.11.1) (2020-12-28)
+
+
+### Bug Fixes
+
+* fix pkgOptions resolver ([2a2f0cf](https://github.com/qiwi/multi-semantic-release/commit/2a2f0cf43888f2d6acfc174f12993948947f0111))
+
+# [3.11.0](https://github.com/qiwi/multi-semantic-release/compare/v3.10.0...v3.11.0) (2020-12-24)
+
+
+### Features
+
+* **debug:** log manifest deps changes ([88b4077](https://github.com/qiwi/multi-semantic-release/commit/88b40770d2cdaaf30912745f4fc4eee44357d9ea)), closes [#27](https://github.com/qiwi/multi-semantic-release/issues/27)
+
+# [3.10.0](https://github.com/qiwi/multi-semantic-release/compare/v3.9.5...v3.10.0) (2020-12-23)
+
+
+### Features
+
+* provide pre-release flow ([6a9ce16](https://github.com/qiwi/multi-semantic-release/commit/6a9ce165c44aba3b8ef787cdfa575ad8b0dc3f05)), closes [#25](https://github.com/qiwi/multi-semantic-release/issues/25)
+
 ## [3.9.5](https://github.com/qiwi/multi-semantic-release/compare/v3.9.4...v3.9.5) (2020-11-23)
 
 
