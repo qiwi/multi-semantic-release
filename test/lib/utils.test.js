@@ -19,7 +19,7 @@ describe("tagsToVersions()", () => {
 
 describe("getHighestVersion()", () => {
 	// prettier-ignore
-	const cases = [
+	const highestCases = [
 		["1.0.0", "2.0.0", "2.0.0"],
         ["1.1.1", "1.0.0", "1.1.1"],
         [null, "1.0.0", "1.0.0"],
@@ -27,16 +27,15 @@ describe("getHighestVersion()", () => {
         [undefined, undefined, undefined],
 	]
 
-	cases.forEach(([version1, version2, high]) => {
+	highestCases.forEach(([version1, version2, high]) => {
 		it(`${version1}/${version2} gives highest as ${high}`, () => {
 			expect(getHighestVersion(version1, version2)).toBe(high);
 		});
 	});
-});
 
 describe("getLowestVersion()", () => {
 	// prettier-ignore
-	const cases = [
+	const lowestCases = [
 		["1.0.0", "2.0.0", "1.0.0"],
         ["1.1.1", "1.0.0", "1.0.0"],
         [null, "1.0.0", "1.0.0"],
@@ -44,7 +43,7 @@ describe("getLowestVersion()", () => {
         [undefined, undefined, undefined],
 	]
 
-	cases.forEach(([version1, version2, low]) => {
+	lowestCases.forEach(([version1, version2, low]) => {
 		it(`${version1}/${version2} gives lowest as ${low}`, () => {
 			expect(getLowestVersion(version1, version2, 0)).toBe(low);
 		});
