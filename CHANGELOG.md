@@ -1,3 +1,10 @@
+## [3.12.3](https://github.com/qiwi/multi-semantic-release/compare/v3.12.2...v3.12.3) (2021-01-05)
+
+
+### Performance Improvements
+
+* refactor nextPreVersion to reduce cognitive complexity ([#35](https://github.com/qiwi/multi-semantic-release/issues/35)) ([601bbd3](https://github.com/qiwi/multi-semantic-release/commit/601bbd35d969167c5b54cb0e8bad2be0a2165705))
+
 ## [3.12.2](https://github.com/qiwi/multi-semantic-release/compare/v3.12.1...v3.12.2) (2021-01-05)
 
 
