@@ -1,5 +1,5 @@
 const { tag } = require("semantic-release/lib/git");
-const { getHighestLowest, getLatestVersion, tagsToVersions } = require("../../lib/utils");
+const { getHighestVersion, getLowestVersion, getLatestVersion, tagsToVersions } = require("../../lib/utils");
 
 describe("tagsToVersions()", () => {
 	// prettier-ignore
@@ -17,9 +17,9 @@ describe("tagsToVersions()", () => {
 	});
 });
 
-describe("getHighestLowest()", () => {
+describe("getHighestVersion()", () => {
 	// prettier-ignore
-	const highestCases = [
+	const cases = [
 		["1.0.0", "2.0.0", "2.0.0"],
         ["1.1.1", "1.0.0", "1.1.1"],
         [null, "1.0.0", "1.0.0"],
@@ -27,14 +27,16 @@ describe("getHighestLowest()", () => {
         [undefined, undefined, undefined],
 	]
 
-	highestCases.forEach(([version1, version2, high]) => {
+	cases.forEach(([version1, version2, high]) => {
 		it(`${version1}/${version2} gives highest as ${high}`, () => {
-			expect(getHighestLowest(version1, version2)).toBe(high);
+			expect(getHighestVersion(version1, version2)).toBe(high);
 		});
 	});
+});
 
+describe("getLowestVersion()", () => {
 	// prettier-ignore
-	const lowestCases = [
+	const cases = [
 		["1.0.0", "2.0.0", "1.0.0"],
         ["1.1.1", "1.0.0", "1.0.0"],
         [null, "1.0.0", "1.0.0"],
@@ -42,9 +44,9 @@ describe("getHighestLowest()", () => {
         [undefined, undefined, undefined],
 	]
 
-	lowestCases.forEach(([version1, version2, low]) => {
+	cases.forEach(([version1, version2, low]) => {
 		it(`${version1}/${version2} gives lowest as ${low}`, () => {
-			expect(getHighestLowest(version1, version2, 0)).toBe(low);
+			expect(getLowestVersion(version1, version2, 0)).toBe(low);
 		});
 	});
 });
