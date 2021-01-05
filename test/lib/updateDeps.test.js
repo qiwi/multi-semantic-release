@@ -1,4 +1,10 @@
-const { resolveReleaseType, resolveNextVersion, getNextVersion, getNextPreVersion } = require("../../lib/updateDeps");
+const {
+	resolveReleaseType,
+	resolveNextVersion,
+	getNextVersion,
+	getNextPreVersion,
+	getPreReleaseTag,
+} = require("../../lib/updateDeps");
 
 describe("resolveNextVersion()", () => {
 	// prettier-ignore
@@ -194,6 +200,28 @@ describe("getNextPreVersion()", () => {
 				},
 				lastTags
 			)).toBe(nextVersion);
+		});
+	});
+});
+
+describe("getPreReleaseTag()", () => {
+	// prettier-ignore
+	const cases = [
+		[undefined, null],
+		[null, null],
+		["1.0.0-rc.0", "rc"],
+		["1.0.0-dev.0", "dev"],
+		["1.0.0-dev.2", "dev"],
+		["1.1.0-beta.0", "beta"],
+		["11.0.0", null],
+		["11.1.0", null],
+		["11.0.1", null],
+	]
+
+	cases.forEach(([version, preReleaseTag]) => {
+		it(`${version} gives ${preReleaseTag}`, () => {
+			// prettier-ignore
+			expect(getPreReleaseTag(version)).toBe(preReleaseTag);
 		});
 	});
 });
