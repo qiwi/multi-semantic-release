@@ -1,3 +1,10 @@
+## [3.12.4](https://github.com/qiwi/multi-semantic-release/compare/v3.12.3...v3.12.4) (2021-01-22)
+
+
+### Bug Fixes
+
+* bump-up of pre-version  ([02ef270](https://github.com/qiwi/multi-semantic-release/commit/02ef270865c45e06bf8d2761359fd53b08cadb70))
+
 ## [3.12.3](https://github.com/qiwi/multi-semantic-release/compare/v3.12.2...v3.12.3) (2021-01-05)
 
 
