@@ -179,8 +179,8 @@ describe("getNextPreVersion()", () => {
 		[null, "patch", "rc", [], "1.0.0-rc.1"],
 		["1.0.0-rc.0", "minor", "dev", [], "1.0.0-dev.1"],
 		["1.0.0-dev.0", "major", "dev", [], "1.0.0-dev.1"],
-		["1.0.0-dev.0", "major", "dev", ["1.0.0-dev.1"], "1.0.0-dev.2"],
-		["1.0.0-dev.0", "major", "dev", ["1.0.0-dev.1", "1.0.1-dev.0"], "1.0.1-dev.1"],
+		["1.0.0-dev.0", "major", "dev", ["testing-package@1.0.0-dev.1"], "1.0.0-dev.2"],
+		["1.0.0-dev.0", "major", "dev", ["testing-package@1.0.0-dev.1", "1.0.1-dev.0"], "1.0.1-dev.1"],
 		["11.0.0", "major", "beta", [], "12.0.0-beta.1"],
 		["1.0.0", "minor", "beta", [], "1.1.0-beta.1"],
 		["1.0.0", "patch", "beta", [], "1.0.1-beta.1"],
@@ -196,7 +196,8 @@ describe("getNextPreVersion()", () => {
 					_nextType: releaseType,
 					_lastRelease: {version: lastVersion},
 					_preRelease: preRelease,
-					_branch: "master",
+          _branch: "master",
+          name: "testing-package"
 				},
 				lastTags
 			)).toBe(nextVersion);
