@@ -307,6 +307,22 @@ function gitGetConfig(cwd, name) {
 	execa.sync("git", ["config", name], { cwd }).stdout;
 }
 
+/**
+ * Get the commit message log of given commit SHA or branch name.
+ *
+ * @param {string} cwd The CWD of the Git repository.
+ * @param {integer} number Limit the number of commits to output.
+ * @param {string} hash The commit SHA or branch name.
+ * @return {Promise<string>} Promise that resolve to commit log message.
+ */
+function gitGetLog(cwd, number, hash) {
+	check(cwd, "cwd: absolute");
+	check(number, "number: integer");
+	check(hash, "hash: string+");
+
+	// Run command.
+	return execa.sync("git", ["log", `-${number}`, hash], { cwd }).stdout;
+}
 // Exports.
 module.exports = {
 	gitInit,
@@ -323,4 +339,5 @@ module.exports = {
 	gitGetTagHash,
 	gitConfig,
 	gitGetConfig,
+	gitGetLog,
 };
