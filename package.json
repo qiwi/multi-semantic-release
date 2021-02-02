@@ -60,7 +60,7 @@
 		"execa": "^5.0.0",
 		"get-stream": "^6.0.0",
 		"git-log-parser": "^1.2.0",
-		"glob": "7.1.6",
+		"globby": "11.0.2",
 		"lodash": "^4.17.20",
 		"meow": "^8.1.0",
 		"promise-events": "^0.2.2",
