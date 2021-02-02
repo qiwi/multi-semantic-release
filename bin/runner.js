@@ -18,7 +18,7 @@ module.exports = (flags) => {
 		console.log(`semantic-release version: ${semrelPkgJson.version}`);
 		console.log(`flags: ${JSON.stringify(flags, null, 2)}`);
 
-		const ignorePackages = flags.ignorePackages ? flags.ignorePackages : [];
+		const ignorePackages = flags.ignorePackages ? flags.ignorePackages : null;
 
 		// Get list of package.json paths according to Yarn workspaces.
 		const paths = getWorkspacesYarn(cwd, ignorePackages);
