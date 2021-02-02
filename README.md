@@ -22,6 +22,25 @@ yarn add @qiwi/multi-semantic-release --dev
 multi-semantic-release
 ```
 
+CLI flag options:
+
+```sh
+  Options
+    --dry-run Dry run mode.
+    --debug Output debugging information.
+    --sequential-init  Avoid hypothetical concurrent initialization collisions.
+    --first-parent Apply commit filtering to current branch only.
+    --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
+	--deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
+	--ignore-packages  Packages list to be ignored on bumping process
+    --help Help info.
+
+  Examples
+    $ multi-semantic-release --debug
+	$ multi-semantic-release --deps.bump=satisfy --deps.release=patch
+	$ multi-semantic-release --ignore-packages=packages/a/**,packages/b/**
+```
+
 ## Configuration
 **MSR** requires **semrel** config to be added [in any supported format](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration) for each package or/and declared in repo root (`globalConfig` is extremely useful if all the modules have the same strategy of release).  
 NOTE config resolver joins `globalConfig` and `packageConfig` during execution.
