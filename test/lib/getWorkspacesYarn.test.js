@@ -12,6 +12,32 @@ describe("getWorkspacesYarn()", () => {
 			`${resolved}/packages/d/package.json`,
 		]);
 	});
+	test("Should ignore some packages", () => {
+		const resolved = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnore`);
+		expect(getWorkspacesYarn(resolved)).toEqual([
+			`${resolved}/packages/a/package.json`,
+			`${resolved}/packages/b/package.json`,
+			`${resolved}/packages/c/package.json`,
+		]);
+
+		const resolvedSplit = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnoreSplit`);
+		expect(getWorkspacesYarn(resolvedSplit)).toEqual([
+			`${resolvedSplit}/packages/a/package.json`,
+			`${resolvedSplit}/packages/c/package.json`,
+		]);
+	});
+	test("Should ignore some packages via CLI", () => {
+		const resolved = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnore`);
+		expect(getWorkspacesYarn(resolved, ["packages/a/**", "packages/b/**", "packages/c/**"])).toEqual([
+			`${resolved}/packages/d/package.json`,
+		]);
+
+		const resolvedSplit = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnoreSplit`);
+		expect(getWorkspacesYarn(resolvedSplit, ["packages/b", "packages/d"])).toEqual([
+			`${resolvedSplit}/packages/a/package.json`,
+			`${resolvedSplit}/packages/c/package.json`,
+		]);
+	});
 	test("TypeError if bad workspaces setting", () => {
 		const resolved = resolve(`${__dirname}/../fixtures/badYarnWorkspaces`);
 		expect(() => getWorkspacesYarn(resolved)).toThrow(TypeError);
@@ -35,16 +61,5 @@ describe("getWorkspacesYarn()", () => {
 			`${resolved}/packages/c/package.json`,
 			`${resolved}/packages/d/package.json`,
 		]);
-	});
-	test("Checks `bash` to be installed", () => {
-		jest.isolateModules(() => {
-			jest.resetModules();
-			jest.mock("bash-path", () => undefined);
-
-			const resolved = resolve(`${__dirname}/../fixtures/yarnWorkspaces`);
-			const getWorkspaces = require("../../lib/getWorkspacesYarn");
-
-			expect(() => getWorkspaces(resolved)).toThrowError("`bash` must be installed");
-		});
 	});
 });
