@@ -12,6 +12,7 @@ const {
 	gitPush,
 	gitTag,
 	gitGetTags,
+	gitGetLog,
 } = require("../helpers/git");
 
 // Clear mocks before tests.
@@ -924,6 +925,56 @@ describe("multiSemanticRelease()", () => {
 		expect(plugin.prepare).toBeCalledTimes(1);
 		expect(plugin.success).toBeCalledTimes(1);
 		expect(plugin.fail).not.toBeCalled();
+	});
+	test("Bot commit release note should filetered", async () => {
+		// Create Git repo.
+		const cwd = gitInit();
+		// Initial commit.
+		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		const sha1 = gitCommitAll(cwd, "feat: Initial release");
+		gitTag(cwd, "msr-test-a@1.0.0");
+		gitTag(cwd, "msr-test-b@1.0.0");
+		gitTag(cwd, "msr-test-c@1.0.0");
+		gitTag(cwd, "msr-test-d@1.0.0");
+		// Second commit.
+		writeFileSync(`${cwd}/packages/a/aaa.txt`, "AAA");
+		const sha2 = gitCommitAll(cwd, "feat(aaa): Add missing text file");
+
+		// Third commit.
+		writeFileSync(`${cwd}/packages/b/bbb.txt`, "BBB");
+		const sha3 = gitCommitAll(cwd, "feat(bbb): Add missing text file");
+
+		const url = gitInitOrigin(cwd);
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		// Call multiSemanticRelease()
+		// Include "@semantic-release/git" for made the git head changed
+		const multiSemanticRelease = require("../../");
+		const result = await multiSemanticRelease(
+			[
+				`packages/c/package.json`,
+				`packages/d/package.json`,
+				`packages/b/package.json`,
+				`packages/a/package.json`,
+			],
+			{
+				plugins: [
+					"@semantic-release/release-notes-generator",
+					"@semantic-release/changelog",
+					"@semantic-release/git",
+				],
+				analyzeCommits: ["@semantic-release/commit-analyzer"],
+			},
+			{ cwd, stdout, stderr },
+			{ deps: {}, dryRun: false }
+		);
+
+		const logOutput = gitGetLog(cwd, 3, "HEAD");
+		expect(logOutput).not.toMatch(/.*aaa.*Add missing text file.*\n.*bbb.*Add missing text file.*/);
 	});
 	test("Deep errors (e.g. in plugins) bubble up and out", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.

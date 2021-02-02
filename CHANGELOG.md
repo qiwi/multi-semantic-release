@@ -1,3 +1,10 @@
+## [3.12.6](https://github.com/qiwi/multi-semantic-release/compare/v3.12.5...v3.12.6) (2021-02-01)
+
+
+### Bug Fixes
+
+* wrong context.commits when have multiple releases commit ([f82f125](https://github.com/qiwi/multi-semantic-release/commit/f82f1258255b7016c45405cc91e3056a1701e92d))
+
 ## [3.12.5](https://github.com/qiwi/multi-semantic-release/compare/v3.12.4...v3.12.5) (2021-01-22)
 
 
