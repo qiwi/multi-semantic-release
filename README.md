@@ -22,6 +22,25 @@ yarn add @qiwi/multi-semantic-release --dev
 multi-semantic-release
 ```
 
+CLI flag options:
+
+```sh
+  Options
+    --dry-run Dry run mode.
+    --debug Output debugging information.
+    --sequential-init  Avoid hypothetical concurrent initialization collisions.
+    --first-parent Apply commit filtering to current branch only.
+    --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
+	--deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
+	--ignore-packages  Packages list to be ignored on bumping process (append to the ones that already exist at package.json workspaces)
+    --help Help info.
+
+  Examples
+    $ multi-semantic-release --debug
+	$ multi-semantic-release --deps.bump=satisfy --deps.release=patch
+	$ multi-semantic-release --ignore-packages=packages/a/**,packages/b/**
+```
+
 ## Configuration
 **MSR** requires **semrel** config to be added [in any supported format](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration) for each package or/and declared in repo root (`globalConfig` is extremely useful if all the modules have the same strategy of release).  
 NOTE config resolver joins `globalConfig` and `packageConfig` during execution.
@@ -33,6 +52,41 @@ const { options: pkgOptions } = await getConfig(dir);
 // We merge this ourselves because package-specific options can override global options.
 const finalOptions = Object.assign({}, globalOptions, pkgOptions);
 ```
+
+Make sure to have a `workspaces` attribute inside your `package.json` project file. In there, you can set a list of packages that you might want to process in the msr process, as well as ignore others. For example, let's say your project has 4 packages (i.e. a, b, c and d) and you want to process only a and d (ignore b and c). You can set the following structure in your `package.json` file:
+
+```json
+{
+	"name": "msr-test-yarn",
+	"author": "Dave Houlbrooke <dave@shax.com",
+	"version": "0.0.0-semantically-released",
+	"private": true,
+	"license": "0BSD",
+	"engines": {
+		"node": ">=8.3"
+	},
+	"workspaces": [
+      "packages/*",
+      "!packages/b/**",
+      "!packages/c/**"
+	],
+	"release": {
+		"plugins": [
+			"@semantic-release/commit-analyzer",
+			"@semantic-release/release-notes-generator"
+		],
+		"noCi": true
+	}
+}
+```
+
+You can also ignore it with the CLI:
+
+```bash
+$ multi-semantic-release --ignore-packages=packages/b/**,packages/c/**
+```
+
+You can also combine the CLI ignore options with the `!` operator at each package inside `workspaces` attribute. Even though you can use the CLI to ignore options, you can't use it to set which packages to be released – i.e. you still need to set the `workspaces` attribute inside the `package.json`.
 
 ## Verified examples
 We use this tool to release our JS platform code inhouse (GitHub Enterprise + JB TeamCity) and for our OSS (GitHub + Travis CI). Guaranteed working configurations available in projects.
