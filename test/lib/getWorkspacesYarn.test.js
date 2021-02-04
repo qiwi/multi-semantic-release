@@ -28,8 +28,8 @@ describe("getWorkspacesYarn()", () => {
 	});
 	test("Should ignore some packages via CLI", () => {
 		const resolved = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnore`);
-		expect(getWorkspacesYarn(resolved, ["packages/a/**", "packages/b/**", "packages/c/**"])).toEqual([
-			`${resolved}/packages/d/package.json`,
+		expect(getWorkspacesYarn(resolved, ["packages/a/**", "packages/b/**"])).toEqual([
+			`${resolved}/packages/c/package.json`,
 		]);
 
 		const resolvedSplit = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnoreSplit`);
@@ -37,6 +37,15 @@ describe("getWorkspacesYarn()", () => {
 			`${resolvedSplit}/packages/a/package.json`,
 			`${resolvedSplit}/packages/c/package.json`,
 		]);
+	});
+	test("Should throw when ignored packages from CLI and workspaces sets an empty workspace list to be processed", () => {
+		const resolved = resolve(`${__dirname}/../fixtures/yarnWorkspacesIgnore`);
+		expect(() => getWorkspacesYarn(resolved, ["packages/a/**", "packages/b/**", "packages/c/**"])).toThrow(
+			TypeError
+		);
+		expect(() => getWorkspacesYarn(resolved, ["packages/a/**", "packages/b/**", "packages/c/**"])).toThrow(
+			"package.json: workspaces: Must contain one or more workspaces"
+		);
 	});
 	test("TypeError if bad workspaces setting", () => {
 		const resolved = resolve(`${__dirname}/../fixtures/badYarnWorkspaces`);
