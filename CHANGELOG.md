@@ -1,3 +1,10 @@
+# [3.13.0](https://github.com/qiwi/multi-semantic-release/compare/v3.12.6...v3.13.0) (2021-02-04)
+
+
+### Features
+
+* ignore packages to be released with workspaces and CLI ([#42](https://github.com/qiwi/multi-semantic-release/issues/42)) ([b98e181](https://github.com/qiwi/multi-semantic-release/commit/b98e181978294bbca7ae7f1a9ab7a9ecf0819847))
+
 ## [3.12.6](https://github.com/qiwi/multi-semantic-release/compare/v3.12.5...v3.12.6) (2021-02-01)
 
 
