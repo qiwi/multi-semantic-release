@@ -1,3 +1,10 @@
+## [3.13.1](https://github.com/qiwi/multi-semantic-release/compare/v3.13.0...v3.13.1) (2021-02-05)
+
+
+### Bug Fixes
+
+* **package:** up deps, fix some vuls ([d8905b0](https://github.com/qiwi/multi-semantic-release/commit/d8905b09152972a30d906ac18fca686b65e61591))
+
 # [3.13.0](https://github.com/qiwi/multi-semantic-release/compare/v3.12.6...v3.13.0) (2021-02-04)
 
 
