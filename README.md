@@ -30,9 +30,9 @@ CLI flag options:
     --debug Output debugging information.
     --sequential-init  Avoid hypothetical concurrent initialization collisions.
     --first-parent Apply commit filtering to current branch only.
-    --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
-	--deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
 	--ignore-packages  Packages list to be ignored on bumping process (append to the ones that already exist at package.json workspaces)
+    --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
+		--deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
     --help Help info.
 
   Examples
