@@ -1,3 +1,11 @@
+## [3.13.2](https://github.com/qiwi/multi-semantic-release/compare/v3.13.1...v3.13.2) (2021-02-09)
+
+
+### Bug Fixes
+
+* filter only tags that are valid ([59b61ad](https://github.com/qiwi/multi-semantic-release/commit/59b61ad1a5823c24d7ff4237edf821fffb04abff))
+* getVersionFromTag tests to fix release process ([e7f1646](https://github.com/qiwi/multi-semantic-release/commit/e7f16466bccc39311da8017dd5f0f7a8ae57686d))
+
 ## [3.13.1](https://github.com/qiwi/multi-semantic-release/compare/v3.13.0...v3.13.1) (2021-02-05)
 
 
