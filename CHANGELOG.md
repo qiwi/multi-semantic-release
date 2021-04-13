@@ -1,3 +1,11 @@
+# [3.14.0](https://github.com/qiwi/multi-semantic-release/compare/v3.13.2...v3.14.0) (2021-04-13)
+
+
+### Features
+
+* allow to run prepare steps sequentially ([299748a](https://github.com/qiwi/multi-semantic-release/commit/299748adc7d6ca4f25db70557d90a124dd7d9f47))
+* check that sequentialPrepare is not enabled on cyclic projects ([68c1198](https://github.com/qiwi/multi-semantic-release/commit/68c1198c395fb00c05fa97db66399f940575c9ee))
+
 ## [3.13.2](https://github.com/qiwi/multi-semantic-release/compare/v3.13.1...v3.13.2) (2021-02-09)
 
 
