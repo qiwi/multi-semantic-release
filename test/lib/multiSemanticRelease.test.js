@@ -1,4 +1,6 @@
+const { ValueError } = require("blork");
 const { writeFileSync } = require("fs");
+const { resolve } = require("path");
 const path = require("path");
 const { Signale } = require("signale");
 const { WritableStreamBuffer } = require("stream-buffers");
@@ -17,6 +19,7 @@ const {
 
 // Clear mocks before tests.
 beforeEach(() => {
+	jest.setTimeout(50000);
 	jest.clearAllMocks(); // Clear all mocks.
 	require.cache = {}; // Clear the require cache so modules are loaded fresh.
 });
@@ -353,6 +356,7 @@ describe("multiSemanticRelease()", () => {
 			},
 		});
 	});
+
 	test("Two separate releases (release to prerelease)", async () => {
 		const packages = ["packages/c/", "packages/d/"];
 
@@ -798,6 +802,111 @@ describe("multiSemanticRelease()", () => {
 			},
 		});
 	});
+
+	test("Changes in child packages with sequentialPrepare", async () => {
+		const mockPrepare = jest.fn();
+		// Create Git repo.
+		const cwd = gitInit();
+		// Initial commit.
+		copyDirectory(`test/fixtures/yarnWorkspaces2Packages/`, cwd);
+		const sha1 = gitCommitAll(cwd, "feat: Initial release");
+		gitTag(cwd, "msr-test-c@1.0.0");
+		gitTag(cwd, "msr-test-d@1.0.0");
+		// Second commit.
+		writeFileSync(`${cwd}/packages/d/aaa.txt`, "AAA");
+		const sha2 = gitCommitAll(cwd, "feat(aaa): Add missing text file");
+		const url = gitInitOrigin(cwd);
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const multiSemanticRelease = require("../../");
+		const result = await multiSemanticRelease(
+			[`packages/c/package.json`, `packages/d/package.json`],
+			{
+				plugins: [
+					{
+						// Ensure that msr-test-c is always ready before msr-test-d
+						verify: (_, { lastRelease: { name } }) =>
+							new Promise((resolvePromise) => {
+								if (name.split("@")[0] === "msr-test-c") {
+									resolvePromise();
+								}
+
+								setTimeout(resolvePromise, 5000);
+							}),
+					},
+					{
+						prepare: (_, { lastRelease: { name } }) => {
+							mockPrepare(name.split("@")[0]);
+						},
+					},
+				],
+			},
+			{ cwd, stdout, stderr },
+			{ deps: {}, dryRun: false, sequentialPrepare: true }
+		);
+
+		expect(mockPrepare).toHaveBeenNthCalledWith(1, "msr-test-d");
+		expect(mockPrepare).toHaveBeenNthCalledWith(2, "msr-test-c");
+
+		// Get stdout and stderr output.
+		const err = stderr.getContentsAsString("utf8");
+		expect(err).toBe(false);
+		const out = stdout.getContentsAsString("utf8");
+		expect(out).toMatch("Started multirelease! Loading 2 packages...");
+		expect(out).toMatch("Loaded package msr-test-c");
+		expect(out).toMatch("Loaded package msr-test-d");
+		expect(out).toMatch("Queued 2 packages! Starting release...");
+		expect(out).toMatch("Created tag msr-test-d@1.1.0");
+		expect(out).toMatch("Created tag msr-test-c@1.0.1");
+		expect(out).toMatch("Released 2 of 2 packages, semantically!");
+
+		// C.
+		expect(result[0].name).toBe("msr-test-c");
+		expect(result[0].result.lastRelease).toMatchObject({
+			gitHead: sha1,
+			gitTag: "msr-test-c@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[0].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: "msr-test-c@1.0.1",
+			type: "patch",
+			version: "1.0.1",
+		});
+
+		// D.
+		expect(result[1].name).toBe("msr-test-d");
+		expect(result[1].result.lastRelease).toEqual({
+			channels: [null],
+			gitHead: sha1,
+			gitTag: "msr-test-d@1.0.0",
+			name: "msr-test-d@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[1].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: "msr-test-d@1.1.0",
+			type: "minor",
+			version: "1.1.0",
+		});
+
+		// ONLY three times.
+		expect(result[2]).toBe(undefined);
+
+		// Check manifests.
+		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
+			dependencies: {
+				"msr-test-d": "1.1.0",
+			},
+		});
+	});
+
 	test("Changes in some packages (sequential-init)", async () => {
 		// Create Git repo.
 		const cwd = gitInit();
@@ -829,8 +938,7 @@ describe("multiSemanticRelease()", () => {
 				`packages/a/package.json`,
 			],
 			{},
-			{ cwd, stdout, stderr },
-			{ sequentialInit: true, deps: {} }
+			{ cwd, stdout, stderr }
 		);
 
 		// Check manifests.
@@ -1079,6 +1187,39 @@ describe("multiSemanticRelease()", () => {
 		await expect(r6).rejects.toBeInstanceOf(SyntaxError);
 		await expect(r6).rejects.toMatchObject({
 			message: expect.stringMatching("Package peerDependencies must be object"),
+		});
+	});
+
+	test("ValueError if sequentialPrepare is enabled on a cyclic project", async () => {
+		// Create Git repo with copy of Yarn workspaces fixture.
+		const cwd = gitInit();
+		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		const sha = gitCommitAll(cwd, "feat: Initial release");
+		const url = gitInitOrigin(cwd);
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const multiSemanticRelease = require("../../");
+		const result = multiSemanticRelease(
+			[
+				`packages/a/package.json`,
+				`packages/b/package.json`,
+				`packages/c/package.json`,
+				`packages/d/package.json`,
+			],
+			{},
+			{ cwd, stdout, stderr },
+			{ sequentialPrepare: true, deps: {} }
+		);
+
+		await expect(result).rejects.toBeInstanceOf(ValueError);
+		await expect(result).rejects.toMatchObject({
+			message: expect.stringMatching("can't have cyclic with sequentialPrepare option"),
 		});
 	});
 });
