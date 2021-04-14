@@ -1,3 +1,10 @@
+## [3.14.1](https://github.com/qiwi/multi-semantic-release/compare/v3.14.0...v3.14.1) (2021-04-14)
+
+
+### Bug Fixes
+
+* add flag to enable sequentialPrepare mode ([70c2dc5](https://github.com/qiwi/multi-semantic-release/commit/70c2dc54b393a9f0b9d7fca82a1f83a22bd2ff54))
+
 # [3.14.0](https://github.com/qiwi/multi-semantic-release/compare/v3.13.2...v3.14.0) (2021-04-13)
 
 
