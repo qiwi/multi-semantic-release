@@ -12,6 +12,7 @@ const cli = meow(
     --dry-run Dry run mode.
     --debug Output debugging information.
     --sequential-init  Avoid hypothetical concurrent initialization collisions.
+    --sequential-prepare  Avoid hypothetical concurrent preparation collisions. Do not use if your project have cyclic dependencies.
     --first-parent Apply commit filtering to current branch only.
     --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
     --deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
@@ -26,6 +27,9 @@ const cli = meow(
 	{
 		flags: {
 			sequentialInit: {
+				type: "boolean",
+			},
+			sequentialPrepare: {
 				type: "boolean",
 			},
 			firstParent: {
