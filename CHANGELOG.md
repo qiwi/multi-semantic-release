@@ -1,3 +1,10 @@
+## [3.14.2](https://github.com/qiwi/multi-semantic-release/compare/v3.14.1...v3.14.2) (2021-04-16)
+
+
+### Bug Fixes
+
+* **sequential-prepare:** do not wait forever when a child package has no change ([713046a](https://github.com/qiwi/multi-semantic-release/commit/713046a251e9da435dad99ce7d5c7745aeff1871))
+
 ## [3.14.1](https://github.com/qiwi/multi-semantic-release/compare/v3.14.0...v3.14.1) (2021-04-14)
 
 
