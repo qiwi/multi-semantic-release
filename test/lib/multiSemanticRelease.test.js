@@ -907,6 +907,67 @@ describe("multiSemanticRelease()", () => {
 		});
 	});
 
+	test("Changes in parent packages with sequentialPrepare", async () => {
+		// Create Git repo.
+		const cwd = gitInit();
+		// Initial commit.
+		copyDirectory(`test/fixtures/yarnWorkspaces2Packages/`, cwd);
+		const sha1 = gitCommitAll(cwd, "feat: Initial release");
+		gitTag(cwd, "msr-test-c@1.0.0");
+		gitTag(cwd, "msr-test-d@1.0.0");
+		// Second commit.
+		writeFileSync(`${cwd}/packages/c/aaa.txt`, "AAA");
+		const sha2 = gitCommitAll(cwd, "feat(aaa): Add missing text file");
+		const url = gitInitOrigin(cwd);
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const multiSemanticRelease = require("../../");
+		const result = await multiSemanticRelease(
+			[`packages/c/package.json`, `packages/d/package.json`],
+			{},
+			{ cwd, stdout, stderr },
+			{ deps: {}, dryRun: false, sequentialPrepare: true }
+		);
+
+		// Get stdout and stderr output.
+		const err = stderr.getContentsAsString("utf8");
+		expect(err).toBe(false);
+		const out = stdout.getContentsAsString("utf8");
+		expect(out).toMatch("Started multirelease! Loading 2 packages...");
+		expect(out).toMatch("Loaded package msr-test-c");
+		expect(out).toMatch("Loaded package msr-test-d");
+		expect(out).toMatch("Queued 2 packages! Starting release...");
+		expect(out).toMatch("Created tag msr-test-c@1.1.0");
+		expect(out).toMatch("Released 1 of 2 packages, semantically!");
+
+		// C.
+		expect(result[0].name).toBe("msr-test-c");
+		expect(result[0].result.lastRelease).toMatchObject({
+			gitHead: sha1,
+			gitTag: "msr-test-c@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[0].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: "msr-test-c@1.1.0",
+			type: "minor",
+			version: "1.1.0",
+		});
+
+		// D.
+		expect(result[1].name).toBe("msr-test-d");
+		expect(result[1].result.nextRelease).toBeUndefined();
+
+		// ONLY three times.
+		expect(result[2]).toBe(undefined);
+	});
+
 	test("Changes in some packages (sequential-init)", async () => {
 		// Create Git repo.
 		const cwd = gitInit();
