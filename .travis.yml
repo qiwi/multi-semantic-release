@@ -1,9 +1,5 @@
 os: linux
 language: node_js
-node_js:
-  - 10
-  - 12
-  - 14
 
 stages:
   - test
@@ -15,33 +11,32 @@ branches:
 
 cache: yarn
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
-after_script:
-  - ./cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
 install:
   - yarn
 
-script:
-  - yarn run build
 
 jobs:
   include:
     - stage: test
       node_js:
-        - 10
         - 12
         - 14
+        - 16
+
+      before_script:
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
+
       script:
         - yarn test
+
+      after_script:
+        - ./cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     - stage: release
       node_js:
-        - 12
+        - 16
       script: skip # Skip running "yarn test" again
       deploy:
         provider: script
