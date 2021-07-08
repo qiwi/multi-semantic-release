@@ -1,3 +1,15 @@
+# [3.15.0](https://github.com/qiwi/multi-semantic-release/compare/v3.14.2...v3.15.0) (2021-07-08)
+
+
+### Bug Fixes
+
+* update deps, fix some vuls ([f3cafc8](https://github.com/qiwi/multi-semantic-release/commit/f3cafc812ad58fb03c87065b477860ff5e58023c))
+
+
+### Features
+
+* add pnpm and bolt support ([91465de](https://github.com/qiwi/multi-semantic-release/commit/91465de637524b109aa4f6b898ff0e451ef39c36))
+
 ## [3.14.2](https://github.com/qiwi/multi-semantic-release/compare/v3.14.1...v3.14.2) (2021-04-16)
 
 
