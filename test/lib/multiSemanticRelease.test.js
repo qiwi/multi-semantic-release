@@ -1283,4 +1283,31 @@ describe("multiSemanticRelease()", () => {
 			message: expect.stringMatching("can't have cyclic with sequentialPrepare option"),
 		});
 	});
+
+	test("Generated tag with custom version format", async () => {
+		// Create Git repo with copy of Yarn workspaces fixture.
+		const cwd = await gitInit();
+		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		await gitCommitAll(cwd, "feat: Initial release");
+		await gitInitOrigin(cwd);
+		await gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		const multiSemanticRelease = require("../../");
+		await multiSemanticRelease(
+			[`packages/a/package.json`],
+			{},
+			{ cwd, stdout, stderr },
+			{ tagVersionFormat: "/${version}", deps: {} }
+		);
+
+		// Get stdout and stderr output.
+		const err = stderr.getContentsAsString("utf8");
+		expect(err).toBe(false);
+		const out = stdout.getContentsAsString("utf8");
+		expect(out).toMatch("Created tag msr-test-a/1.0.0");
+	});
 });
