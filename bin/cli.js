@@ -17,7 +17,7 @@ const cli = meow(
     --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
     --deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
     --ignore-packages  Packages' list to be ignored on bumping process
-    --tag-version-format Format to use for the version number applied to tag names. Default: "@\${version}" generates "package-name@1.0.0"
+    --tag-format Format to use for creating tag names. Should include "name" and "version" vars. Default: "\${name}@\${version}" generates "package-name@1.0.0"
     --help Help info.
 
   Examples
@@ -50,9 +50,9 @@ const cli = meow(
 			ignorePackages: {
 				type: "string",
 			},
-			tagVersionFormat: {
+			tagFormat: {
 				type: "string",
-				default: "@${version}",
+				default: "${name}@${version}",
 			},
 			dryRun: {
 				type: "boolean",
