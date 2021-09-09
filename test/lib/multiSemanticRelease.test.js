@@ -1301,7 +1301,7 @@ describe("multiSemanticRelease()", () => {
 			[`packages/a/package.json`],
 			{},
 			{ cwd, stdout, stderr },
-			{ tagVersionFormat: "/${version}", deps: {} }
+			{ tagFormat: "${name}/${version}", deps: {} }
 		);
 
 		// Get stdout and stderr output.
