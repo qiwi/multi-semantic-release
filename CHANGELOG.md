@@ -1,3 +1,10 @@
+# [3.16.0](https://github.com/qiwi/multi-semantic-release/compare/v3.15.0...v3.16.0) (2021-09-10)
+
+
+### Features
+
+* add --tag-version-format flag ([259864c](https://github.com/qiwi/multi-semantic-release/commit/259864c2860b651435b4a8e1f01c3cfab350c590))
+
 # [3.15.0](https://github.com/qiwi/multi-semantic-release/compare/v3.14.2...v3.15.0) (2021-07-08)
 
 
