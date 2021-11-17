@@ -1,3 +1,10 @@
+# [3.17.0](https://github.com/qiwi/multi-semantic-release/compare/v3.16.0...v3.17.0) (2021-11-17)
+
+
+### Features
+
+* handle .cjs configs ([38f657a](https://github.com/qiwi/multi-semantic-release/commit/38f657aea29097f55e5eafe0bd3f82790eded7f1))
+
 # [3.16.0](https://github.com/qiwi/multi-semantic-release/compare/v3.15.0...v3.16.0) (2021-09-10)
 
 
