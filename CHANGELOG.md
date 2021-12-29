@@ -1,3 +1,10 @@
+## [3.17.1](https://github.com/qiwi/multi-semantic-release/compare/v3.17.0...v3.17.1) (2021-12-29)
+
+
+### Bug Fixes
+
+* fix globbing on Windows ([#57](https://github.com/qiwi/multi-semantic-release/issues/57)) ([1d71d21](https://github.com/qiwi/multi-semantic-release/commit/1d71d21bc0f95a921e390d59b80d0e2f4a3bd611))
+
 # [3.17.0](https://github.com/qiwi/multi-semantic-release/compare/v3.16.0...v3.17.0) (2021-11-17)
 
 
