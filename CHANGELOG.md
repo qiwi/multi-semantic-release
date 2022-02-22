@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/qiwi/multi-semantic-release/compare/v4.0.1...v4.0.2) (2022-02-22)
+
+
+### Bug Fixes
+
+* pin npm as peer dep ([67d8b80](https://github.com/qiwi/multi-semantic-release/commit/67d8b8095018b5d979795703f36d874a174baf07))
+
 ## [4.0.1](https://github.com/qiwi/multi-semantic-release/compare/v4.0.0...v4.0.1) (2022-02-22)
 
 
