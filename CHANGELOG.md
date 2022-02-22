@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/qiwi/multi-semantic-release/compare/v3.17.1...v4.0.0) (2022-02-22)
+
+
+### Features
+
+* bump semrel to v19 ([e6b8acb](https://github.com/qiwi/multi-semantic-release/commit/e6b8acb937e43ef28f311922e84434c75c8ad844))
+
+
+### BREAKING CHANGES
+
+* semrel npm plugin calls local npm version https://github.com/semantic-release/npm/pull/445
+
 ## [3.17.1](https://github.com/qiwi/multi-semantic-release/compare/v3.17.0...v3.17.1) (2021-12-29)
 
 
