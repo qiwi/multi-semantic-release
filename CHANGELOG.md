@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/qiwi/multi-semantic-release/compare/v4.0.0...v4.0.1) (2022-02-22)
+
+
+### Bug Fixes
+
+* pin npm version to v8.4.1 ([22c89d1](https://github.com/qiwi/multi-semantic-release/commit/22c89d164ca6e4fb8fe5e9b7e3164685d543d5bd)), closes [#60](https://github.com/qiwi/multi-semantic-release/issues/60)
+
 # [4.0.0](https://github.com/qiwi/multi-semantic-release/compare/v3.17.1...v4.0.0) (2022-02-22)
 
 
