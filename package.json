@@ -72,6 +72,9 @@
 		"stream-buffers": "^3.0.2",
 		"tempy": "^1.0.1"
 	},
+	"peerDependencies": {
+		"npm": "8.4.1"
+	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^16.2.1",
 		"@semantic-release/changelog": "^6.0.1",
@@ -86,8 +89,7 @@
 		"file-url": "^3.0.0",
 		"husky": "^7.0.4",
 		"jest": "^27.5.1",
-		"prettier": "^2.5.1",
-		"npm": "8.4.1"
+		"prettier": "^2.5.1"
 	},
 	"release": {
 		"branch": "master",
