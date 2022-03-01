@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/qiwi/multi-semantic-release/compare/v4.0.2...v4.0.3) (2022-03-01)
+
+
+### Bug Fixes
+
+* update manifest version before npm plugin prepare step ([a1ae4c3](https://github.com/qiwi/multi-semantic-release/commit/a1ae4c3785498a3b22afcac278e431aaf99a1232)), closes [#58](https://github.com/qiwi/multi-semantic-release/issues/58)
+
 ## [4.0.2](https://github.com/qiwi/multi-semantic-release/compare/v4.0.1...v4.0.2) (2022-02-22)
 
 
