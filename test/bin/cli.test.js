@@ -25,7 +25,7 @@ describe("multi-semantic-release CLI", () => {
 		const filepath = `${__dirname}/../../bin/cli.js`;
 
 		// Run via command line.
-		const out = (await execa("node", [filepath], { cwd })).stdout;
+		const out = (await execa("node", [filepath, "-- --no-sequential-prepare"], { cwd })).stdout;
 		expect(out).toMatch("Started multirelease! Loading 4 packages...");
 		expect(out).toMatch("Released 4 of 4 packages, semantically!");
 	});
