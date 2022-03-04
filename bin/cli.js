@@ -32,6 +32,7 @@ const cli = meow(
 			},
 			sequentialPrepare: {
 				type: "boolean",
+				default: true,
 			},
 			firstParent: {
 				type: "boolean",
@@ -63,7 +64,16 @@ const cli = meow(
 
 const processFlags = (flags) => {
 	return toPairs(flags).reduce((m, [k, v]) => {
-		if (k === "ignorePackages" && v) return set(m, k, v.split(","));
+		if (k === "ignorePackages" && v) {
+			return set(m, k, v.split(","));
+		}
+
+		// FIXME Smth wrong with negate parser.
+		if (flags[`no${k[0].toUpperCase()}${k.slice(1)}`]) {
+			flags[k] = false;
+			return set(m, k, false);
+		}
+
 		return set(m, k, v);
 	}, {});
 };
