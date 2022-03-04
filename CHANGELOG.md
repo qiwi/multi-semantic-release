@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/qiwi/multi-semantic-release/compare/v4.0.3...v5.0.0) (2022-03-04)
+
+
+### Features
+
+* enable `sequentialPrepare` flag by default ([ad7e81f](https://github.com/qiwi/multi-semantic-release/commit/ad7e81f2e30b7673444dc31f39381b20afdf54bc))
+
+
+### BREAKING CHANGES
+
+* sequentialPrepare is set to true, to disable pass `--no-sequential-prepare` option
+
 ## [4.0.3](https://github.com/qiwi/multi-semantic-release/compare/v4.0.2...v4.0.3) (2022-03-01)
 
 
