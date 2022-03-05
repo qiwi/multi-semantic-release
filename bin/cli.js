@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-const meow = require("meow");
-const { toPairs, set } = require("lodash");
-const runner = require("./runner");
+import meow from "meow";
+import { toPairs, set } from "lodash-es";
+import runner from "./runner.js";
+
 const cli = meow(
 	`
   Usage

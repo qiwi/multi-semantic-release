@@ -1,11 +1,11 @@
-const {
+import {
 	resolveReleaseType,
 	resolveNextVersion,
 	getNextVersion,
 	getNextPreVersion,
 	getPreReleaseTag,
 	getVersionFromTag,
-} = require("../../lib/updateDeps");
+} from "../../lib/updateDeps.js";
 
 describe("resolveNextVersion()", () => {
 	// prettier-ignore

@@ -1,5 +1,5 @@
-const { basename, join } = require("path");
-const { copyFileSync, existsSync, mkdirSync, lstatSync, readdirSync, readFileSync, writeFileSync } = require("fs");
+import { basename, join } from "path";
+import { copyFileSync, existsSync, mkdirSync, lstatSync, readdirSync, readFileSync, writeFileSync } from "fs";
 
 // Deep copy a directory.
 function copyDirectory(source, target) {
@@ -45,7 +45,7 @@ function createNewTestingFiles(folders, cwd) {
 }
 
 // Exports.
-module.exports = {
+export {
 	copyDirectory,
 	isDirectory,
 	createNewTestingFiles,

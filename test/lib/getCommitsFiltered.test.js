@@ -1,8 +1,8 @@
-const { isAbsolute, join } = require("path");
-const tempy = require("tempy");
-const { readFileSync, writeFileSync, mkdirSync, existsSync } = require("fs");
-const getCommitsFiltered = require("../../lib/getCommitsFiltered");
-const { gitInit, gitCommitAll, gitGetCommits } = require("../helpers/git");
+import { isAbsolute, join } from "path";
+import tempy from "tempy";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
+import getCommitsFiltered from "../../lib/getCommitsFiltered.js";
+import { gitInit, gitCommitAll } from "../helpers/git.js";
 
 // Tests.
 describe("getCommitsFiltered()", () => {

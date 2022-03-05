@@ -1,8 +1,10 @@
-const tempy = require("tempy");
-const { WritableStreamBuffer } = require("stream-buffers");
-const { copyDirectory, createNewTestingFiles } = require("../helpers/file");
-const { gitInit, gitCommitAll, gitInitOrigin, gitPush } = require("../helpers/git");
-const { getTags } = require("../../lib/git");
+import tempy from "tempy";
+import { WritableStreamBuffer } from "stream-buffers";
+
+import { copyDirectory, createNewTestingFiles } from "../helpers/file.js";
+import { gitInit, gitCommitAll, gitInitOrigin, gitPush } from "../helpers/git.js";
+import { getTags } from "../../lib/git.js";
+import multiSemanticRelease from "../../lib/multiSemanticRelease.js";
 
 test("Fetch all tags on master after two package release", async () => {
 	const packages = ["packages/c/", "packages/d/"];
@@ -19,7 +21,6 @@ test("Fetch all tags on master after two package release", async () => {
 
 	// Call multiSemanticRelease()
 	// Doesn't include plugins that actually publish.
-	const multiSemanticRelease = require("../../");
 	await multiSemanticRelease(
 		packages.map((folder) => `${folder}package.json`),
 		{
@@ -47,7 +48,6 @@ test("Fetch only prerelease tags", async () => {
 
 	// Call multiSemanticRelease()
 	// Doesn't include plugins that actually publish.
-	const multiSemanticRelease = require("../../");
 	await multiSemanticRelease(
 		packages.map((folder) => `${folder}package.json`),
 		{

@@ -1,4 +1,4 @@
-const recognizeFormat = require("../../lib/recognizeFormat");
+import recognizeFormat from "../../lib/recognizeFormat.js";
 
 // Tests.
 describe("recognizeFormat()", () => {

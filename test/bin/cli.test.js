@@ -1,6 +1,6 @@
-const execa = require("execa");
-const { copyDirectory } = require("../helpers/file");
-const {
+import execa from "execa";
+import { copyDirectory } from "../helpers/file.js";
+import {
 	gitInit,
 	gitAdd,
 	gitCommit,
@@ -9,7 +9,11 @@ const {
 	gitPush,
 	gitTag,
 	gitGetTags,
-} = require("../helpers/git");
+} from "../helpers/git.js";
+import {dirname} from "node:path";
+import {fileURLToPath} from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Tests.
 describe("multi-semantic-release CLI", () => {

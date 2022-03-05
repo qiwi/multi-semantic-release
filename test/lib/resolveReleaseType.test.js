@@ -1,4 +1,4 @@
-const { resolveReleaseType } = require("../../lib/updateDeps");
+import { resolveReleaseType } from "../../lib/updateDeps.js";
 
 // Tests.
 describe("resolveReleaseType()", () => {

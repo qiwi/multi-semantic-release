@@ -1,11 +1,15 @@
-module.exports = (flags) => {
+import {createRequire} from "module";
+
+export default async (flags) => {
+	const require = createRequire(import.meta.url);
+
 	if (flags.debug) {
 		require("debug").enable("msr:*");
 	}
 
 	// Imports.
-	const getPackagePaths = require("../lib/getPackagePaths");
-	const multiSemanticRelease = require("../lib/multiSemanticRelease");
+	const getPackagePaths = (await import("../lib/getPackagePaths.js")).default;
+	const multiSemanticRelease = (await import("../lib/multiSemanticRelease.js")).default;
 	const multisemrelPkgJson = require("../package.json");
 	const semrelPkgJson = require("semantic-release/package.json");
 

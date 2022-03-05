@@ -1,13 +1,13 @@
-const { tag } = require("semantic-release/lib/git");
-const { getHighestVersion, getLowestVersion, getLatestVersion, tagsToVersions } = require("../../lib/utils");
+import { tag } from "semantic-release/lib/git.js";
+import { getHighestVersion, getLowestVersion, getLatestVersion, tagsToVersions } from "../../lib/utils.js";
 
 describe("tagsToVersions()", () => {
 	// prettier-ignore
 	const cases = [
-        [[{version: "1.0.0"}, {version: "1.1.0"}, {version: "1.2.0"}], ["1.0.0", "1.1.0", "1.2.0"]],
-        [[],[]],
-        [undefined, []],
-        [null, []],
+		[[{version: "1.0.0"}, {version: "1.1.0"}, {version: "1.2.0"}], ["1.0.0", "1.1.0", "1.2.0"]],
+		[[],[]],
+		[undefined, []],
+		[null, []],
 	]
 
 	cases.forEach(([tags, versions]) => {
@@ -21,10 +21,10 @@ describe("getHighestVersion()", () => {
 	// prettier-ignore
 	const cases = [
 		["1.0.0", "2.0.0", "2.0.0"],
-        ["1.1.1", "1.0.0", "1.1.1"],
-        [null, "1.0.0", "1.0.0"],
-        ["1.0.0", undefined, "1.0.0"],
-        [undefined, undefined, undefined],
+    ["1.1.1", "1.0.0", "1.1.1"],
+    [null, "1.0.0", "1.0.0"],
+    ["1.0.0", undefined, "1.0.0"],
+    [undefined, undefined, undefined],
 	]
 
 	cases.forEach(([version1, version2, high]) => {
@@ -38,10 +38,10 @@ describe("getLowestVersion()", () => {
 	// prettier-ignore
 	const cases = [
 		["1.0.0", "2.0.0", "1.0.0"],
-        ["1.1.1", "1.0.0", "1.0.0"],
-        [null, "1.0.0", "1.0.0"],
-        ["1.0.0", undefined, "1.0.0"],
-        [undefined, undefined, undefined],
+    ["1.1.1", "1.0.0", "1.0.0"],
+    [null, "1.0.0", "1.0.0"],
+    ["1.0.0", undefined, "1.0.0"],
+    [undefined, undefined, undefined],
 	]
 
 	cases.forEach(([version1, version2, low]) => {
@@ -55,10 +55,10 @@ describe("getLatestVersion()", () => {
 	// prettier-ignore
 	const cases = [
 		[["1.2.3-alpha.3", "1.2.0", "1.0.1", "1.0.0-alpha.1"], null, "1.2.0"],
-        [["1.2.3-alpha.3", "1.2.3-alpha.2"], null, undefined],
-        [["1.2.3-alpha.3", "1.2.0", "1.0.1", "1.0.0-alpha.1"], true, "1.2.3-alpha.3"],
-        [["1.2.3-alpha.3", "1.2.3-alpha.2"], true, "1.2.3-alpha.3"],
-        [[], {}, undefined]
+    [["1.2.3-alpha.3", "1.2.3-alpha.2"], null, undefined],
+    [["1.2.3-alpha.3", "1.2.0", "1.0.1", "1.0.0-alpha.1"], true, "1.2.3-alpha.3"],
+    [["1.2.3-alpha.3", "1.2.3-alpha.2"], true, "1.2.3-alpha.3"],
+    [[], {}, undefined]
 	]
 
 	cases.forEach(([versions, withPrerelease, latest]) => {

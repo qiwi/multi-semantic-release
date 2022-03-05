@@ -3,12 +3,12 @@
  * https://github.com/semantic-release/semantic-release/blob/master/test/helpers/git-utils.js
  */
 
-const { check } = require("blork");
-const tempy = require("tempy");
-const execa = require("execa");
-const fileUrl = require("file-url");
-const gitLogParser = require("git-log-parser");
-const { array: getStreamArray } = require("get-stream");
+import { check } from "blork";
+import tempy from "tempy";
+import execa from "execa";
+import fileUrl from "file-url";
+import gitLogParser from "git-log-parser";
+import { array as getStreamArray } from "get-stream";
 
 /**
  * @typedef {Object} Commit
@@ -324,7 +324,7 @@ function gitGetLog(cwd, number, hash) {
 	return execa.sync("git", ["log", `-${number}`, hash], { cwd }).stdout;
 }
 // Exports.
-module.exports = {
+export {
 	gitInit,
 	gitInitRemote,
 	gitInitOrigin,

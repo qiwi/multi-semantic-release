@@ -1,4 +1,4 @@
-const isCyclicProject = require("../../lib/isCyclicProject");
+import isCyclicProject from "../../lib/isCyclicProject.js";
 
 // Tests.
 describe("isCyclicProject()", () => {
