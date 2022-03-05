@@ -1,3 +1,10 @@
+## [5.0.3](https://github.com/qiwi/multi-semantic-release/compare/v5.0.2...v5.0.3) (2022-03-05)
+
+
+### Bug Fixes
+
+* fix nextType resolver ([606914b](https://github.com/qiwi/multi-semantic-release/commit/606914b43fc657340e243ca86430a7fff799210b))
+
 ## [5.0.2](https://github.com/qiwi/multi-semantic-release/compare/v5.0.1...v5.0.2) (2022-03-05)
 
 
