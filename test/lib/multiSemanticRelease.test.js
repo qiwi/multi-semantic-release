@@ -999,7 +999,8 @@ describe("multiSemanticRelease()", () => {
 				`packages/a/package.json`,
 			],
 			{},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr },
+			{ sequentialInit: true }
 		);
 
 		// Check manifests.
