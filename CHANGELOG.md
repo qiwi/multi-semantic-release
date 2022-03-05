@@ -1,3 +1,10 @@
+## [5.0.2](https://github.com/qiwi/multi-semantic-release/compare/v5.0.1...v5.0.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* add sync point for publish step ([adc823e](https://github.com/qiwi/multi-semantic-release/commit/adc823e1c4d2a952c58c8cf2f4fc00db7325ec53))
+
 ## [5.0.1](https://github.com/qiwi/multi-semantic-release/compare/v5.0.0...v5.0.1) (2022-03-05)
 
 
