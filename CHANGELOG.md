@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/qiwi/multi-semantic-release/compare/v5.0.0...v5.0.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* fix cascade bumping when some dep belongs to several levels of the dep tree ([cf20dea](https://github.com/qiwi/multi-semantic-release/commit/cf20deac25982d98fe795c507253ef389c0ecb81))
+
 # [5.0.0](https://github.com/qiwi/multi-semantic-release/compare/v4.0.3...v5.0.0) (2022-03-04)
 
 
