@@ -59,21 +59,21 @@
 		"blork": "^9.3.0",
 		"cosmiconfig": "^7.0.1",
 		"debug": "^4.3.3",
-		"detect-indent": "^6.1.0",
-		"detect-newline": "^3.1.0",
-		"execa": "^5.1.1",
+		"detect-indent": "^7.0.0",
+		"detect-newline": "^4.0.0",
+		"execa": "^6.1.0",
 		"get-stream": "^6.0.1",
 		"git-log-parser": "^1.2.0",
-		"globby": "11.0.4",
+		"globby": "13.1.1",
 		"lodash": "^4.17.21",
 		"lodash-es": "^4.17.21",
-		"meow": "^9.0.0",
+		"meow": "^10.1.2",
 		"promise-events": "^0.2.4",
 		"semantic-release": "^19.0.2",
 		"semver": "^7.3.5",
 		"signale": "^1.4.0",
 		"stream-buffers": "^3.0.2",
-		"tempy": "^1.0.1"
+		"tempy": "^2.0.0"
 	},
 	"peerDependencies": {
 		"npm": "8.4.1"
@@ -89,7 +89,7 @@
 		"eslint": "^8.10.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.0.0",
-		"file-url": "^3.0.0",
+		"file-url": "^4.0.0",
 		"husky": "^7.0.4",
 		"jest": "^27.5.1",
 		"prettier": "^2.5.1"

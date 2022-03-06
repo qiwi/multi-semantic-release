@@ -5,7 +5,7 @@
 
 import { check } from "blork";
 import tempy from "tempy";
-import execa from "execa";
+import { execaSync } from "execa";
 import fileUrl from "file-url";
 import gitLogParser from "git-log-parser";
 import { array as getStreamArray } from "get-stream";
@@ -32,8 +32,8 @@ function gitInit(branch = "master") {
 
 	// Init Git in a temp directory.
 	const cwd = tempy.directory();
-	execa.sync("git", ["init"], { cwd });
-	execa.sync("git", ["checkout", "-b", branch], { cwd });
+	execaSync("git", ["init"], { cwd });
+	execaSync("git", ["checkout", "-b", branch], { cwd });
 
 	// Disable GPG signing for commits.
 	gitConfig(cwd, "commit.gpgsign", false);
@@ -51,7 +51,7 @@ function gitInit(branch = "master") {
 function gitInitRemote() {
 	// Init bare Git repository in a temp directory.
 	const cwd = tempy.directory();
-	execa.sync("git", ["init", "--bare"], { cwd });
+	execaSync("git", ["init", "--bare"], { cwd });
 
 	// Turn remote path into a file URL.
 	const url = fileUrl(cwd);
@@ -76,15 +76,15 @@ function gitInitOrigin(cwd, releaseBranch = null) {
 	const url = gitInitRemote();
 
 	// Set origin on local repo.
-	execa.sync("git", ["remote", "add", "origin", url], { cwd });
+	execaSync("git", ["remote", "add", "origin", url], { cwd });
 
 	// Set up a release branch. Return to master afterwards.
 	if (releaseBranch) {
-		execa.sync("git", ["checkout", "-b", releaseBranch], { cwd });
-		execa.sync("git", ["checkout", "master"], { cwd });
+		execaSync("git", ["checkout", "-b", releaseBranch], { cwd });
+		execaSync("git", ["checkout", "master"], { cwd });
 	}
 
-	execa.sync("git", ["push", "--all", "origin"], { cwd });
+	execaSync("git", ["push", "--all", "origin"], { cwd });
 
 	// Return URL for remote.
 	return url;
@@ -104,7 +104,7 @@ function gitAdd(cwd, file = ".") {
 	check(cwd, "cwd: absolute");
 
 	// Await command.
-	execa.sync("git", ["add", file], { cwd });
+	execaSync("git", ["add", file], { cwd });
 }
 
 // Commits.
@@ -123,7 +123,7 @@ function gitCommit(cwd, message) {
 	check(message, "message: string+");
 
 	// Await the command.
-	execa.sync("git", ["commit", "-m", message, "--no-gpg-sign"], { cwd });
+	execaSync("git", ["commit", "-m", message, "--no-gpg-sign"], { cwd });
 
 	// Return HEAD SHA.
 	return gitGetHead(cwd);
@@ -167,7 +167,7 @@ function gitPush(cwd, remote = "origin", branch = "master") {
 	check(branch, "branch: lower");
 
 	// Await command.
-	execa.sync("git", ["push", "--tags", remote, `HEAD:${branch}`], { cwd });
+	execaSync("git", ["push", "--tags", remote, `HEAD:${branch}`], { cwd });
 }
 
 // Branches.
@@ -185,7 +185,7 @@ function gitBranch(cwd, branch) {
 	check(branch, "branch: lower");
 
 	// Await command.
-	execa.sync("git", ["branch", branch], { cwd });
+	execaSync("git", ["branch", branch], { cwd });
 }
 
 /**
@@ -201,7 +201,7 @@ function gitCheckout(cwd, branch) {
 	check(branch, "branch: lower");
 
 	// Await command.
-	execa.sync("git", ["checkout", branch], { cwd });
+	execaSync("git", ["checkout", branch], { cwd });
 }
 
 // Hashes.
@@ -217,7 +217,7 @@ function gitGetHead(cwd) {
 	check(cwd, "cwd: absolute");
 
 	// Await command and return HEAD SHA.
-	return execa.sync("git", ["rev-parse", "HEAD"], { cwd }).stdout;
+	return execaSync("git", ["rev-parse", "HEAD"], { cwd }).stdout;
 }
 
 // Tags.
@@ -237,7 +237,7 @@ function gitTag(cwd, tagName, hash = undefined) {
 	check(hash, "hash: alphanumeric{40}?");
 
 	// Run command.
-	execa.sync("git", hash ? ["tag", "-f", tagName, hash] : ["tag", tagName], { cwd });
+	execaSync("git", hash ? ["tag", "-f", tagName, hash] : ["tag", tagName], { cwd });
 }
 
 /**
@@ -253,7 +253,7 @@ function gitGetTags(cwd, hash) {
 	check(hash, "hash: alphanumeric{40}");
 
 	// Run command.
-	return execa.sync("git", ["describe", "--tags", "--exact-match", hash], { cwd }).stdout;
+	return execaSync("git", ["describe", "--tags", "--exact-match", hash], { cwd }).stdout;
 }
 
 /**
@@ -269,7 +269,7 @@ function gitGetTagHash(cwd, tagName) {
 	check(tagName, "tagName: string+");
 
 	// Run command.
-	return execa.sync("git", ["rev-list", "-1", tagName], { cwd }).stdout;
+	return execaSync("git", ["rev-list", "-1", tagName], { cwd }).stdout;
 }
 
 // Configs.
@@ -288,7 +288,7 @@ function gitConfig(cwd, name, value) {
 	check(name, "name: string+");
 
 	// Run command.
-	execa.sync("git", ["config", "--add", name, value], { cwd });
+	execaSync("git", ["config", "--add", name, value], { cwd });
 }
 
 /**
@@ -304,7 +304,7 @@ function gitGetConfig(cwd, name) {
 	check(name, "name: string+");
 
 	// Run command.
-	execa.sync("git", ["config", name], { cwd }).stdout;
+	execaSync("git", ["config", name], { cwd }).stdout;
 }
 
 /**
@@ -321,7 +321,7 @@ function gitGetLog(cwd, number, hash) {
 	check(hash, "hash: string+");
 
 	// Run command.
-	return execa.sync("git", ["log", `-${number}`, hash], { cwd }).stdout;
+	return execaSync("git", ["log", `-${number}`, hash], { cwd }).stdout;
 }
 // Exports.
 export {

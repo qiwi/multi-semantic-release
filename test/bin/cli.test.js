@@ -1,4 +1,4 @@
-import execa from "execa";
+import { execa } from "execa";
 import {dirname} from "node:path";
 import {fileURLToPath} from "node:url";
 
