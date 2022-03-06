@@ -8,7 +8,10 @@
 		"yarn": ">=1.0.0"
 	},
 	"type": "module",
-	"exports": "./lib/multiSemanticRelease.js",
+	"exports": {
+		".": "./lib/multiSemanticRelease.js",
+		"./*": "./*"
+	},
 	"bin": {
 		"multi-semantic-release": "./bin/cli.js"
 	},
