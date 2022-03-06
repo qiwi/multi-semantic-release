@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/qiwi/multi-semantic-release/compare/v6.0.0...v6.0.1) (2022-03-06)
+
+
+### Bug Fixes
+
+* fix export point ([cf31425](https://github.com/qiwi/multi-semantic-release/commit/cf314259697d8c7492c3c63da380b4207aae665a))
+
 # [6.0.0](https://github.com/qiwi/multi-semantic-release/compare/v5.0.3...v6.0.0) (2022-03-06)
 
 
