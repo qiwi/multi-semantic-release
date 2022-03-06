@@ -1,4 +1,7 @@
 import execa from "execa";
+import {dirname} from "node:path";
+import {fileURLToPath} from "node:url";
+
 import { copyDirectory } from "../helpers/file.js";
 import {
 	gitInit,
@@ -10,8 +13,7 @@ import {
 	gitTag,
 	gitGetTags,
 } from "../helpers/git.js";
-import {dirname} from "node:path";
-import {fileURLToPath} from "node:url";
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -29,10 +31,21 @@ describe("multi-semantic-release CLI", () => {
 		const filepath = `${__dirname}/../../bin/cli.js`;
 
 		// Run via command line.
-		const out = (await execa("node", [filepath, "-- --no-sequential-prepare"], { cwd })).stdout;
-		expect(out).toMatch("Started multirelease! Loading 4 packages...");
-		expect(out).toMatch("Released 4 of 4 packages, semantically!");
+		// const out = (await execa("node", [filepath, "-- --no-sequential-prepare"], { cwd })).stdout;
+		// expect(out).toMatch("Started multirelease! Loading 4 packages...");
+		// expect(out).toMatch("Released 4 of 4 packages, semantically!");
+
+		try {
+			await execa("node", [filepath, "-- --no-sequential-prepare"], {cwd})
+		} catch(res) {
+			const {stdout, stderr, exitCode} = res
+
+			expect(stdout).toMatch("Started multirelease! Loading 4 packages...");
+			expect(stderr).toMatch("Error: Cyclic dependency, node was:\"msr-test-c\"");
+			expect(exitCode).toBe(1);
+		}
 	});
+
 	test("Initial commit (changes in 2 packages, 2 filtered out)", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
@@ -45,7 +58,7 @@ describe("multi-semantic-release CLI", () => {
 		const filepath = `${__dirname}/../../bin/cli.js`;
 
 		// Run via command line.
-		const out = (await execa("node", [filepath, "--ignore-packages=packages/c/**,packages/d/**"], { cwd })).stdout;
+		const out = (await execa("node", [filepath, "-- --ignore-packages=packages/c/**,packages/d/**"], { cwd })).stdout;
 		expect(out).toMatch("Started multirelease! Loading 2 packages...");
 		expect(out).toMatch("Released 2 of 2 packages, semantically!");
 	});

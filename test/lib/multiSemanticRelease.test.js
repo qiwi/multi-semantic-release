@@ -112,7 +112,7 @@ describe("multiSemanticRelease()", () => {
 		});
 		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-c 1.0.0");
 		expect(result[2].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
-		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.0");
+		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-d:** upgraded to 1.0.0");
 
 		// D.
 		expect(result[3].name).toBe("msr-test-d");
@@ -146,7 +146,6 @@ describe("multiSemanticRelease()", () => {
 		});
 		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
 			devDependencies: {
-				"msr-test-b": "1.0.0",
 				"msr-test-d": "1.0.0",
 			},
 		});
@@ -236,7 +235,7 @@ describe("multiSemanticRelease()", () => {
 		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-c 1.0.0-dev.1");
 		expect(result[2].result.nextRelease.notes).toMatch("### Features\n\n* Initial release");
 		expect(result[2].result.nextRelease.notes).toMatch(
-			"### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.0-dev.1"
+			"### Dependencies\n\n* **msr-test-d:** upgraded to 1.0.0-dev.1"
 		);
 
 		// D.
@@ -271,7 +270,6 @@ describe("multiSemanticRelease()", () => {
 		});
 		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
 			devDependencies: {
-				"msr-test-b": "1.0.0-dev.1",
 				"msr-test-d": "1.0.0-dev.1",
 			},
 		});
@@ -569,7 +567,7 @@ describe("multiSemanticRelease()", () => {
 		expect(result[2].result.nextRelease.notes).toMatch("# msr-test-c [1.0.0-dev.2]");
 		expect(result[2].result.nextRelease.notes).toMatch("### Features\n\n* New releases");
 		expect(result[2].result.nextRelease.notes).toMatch(
-			"### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.0-dev.2"
+			"### Dependencies\n\n* **msr-test-d:** upgraded to 1.0.0-dev.2"
 		);
 
 		// D.
@@ -610,11 +608,10 @@ describe("multiSemanticRelease()", () => {
 		});
 		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
 			devDependencies: {
-				"msr-test-b": "1.0.0-dev.2",
 				"msr-test-d": "1.0.0-dev.2",
 			},
 		});
-	}, 10000);
+	}, 20000);
 	test("No changes in any packages", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.
 		const cwd = gitInit();
@@ -712,9 +709,9 @@ describe("multiSemanticRelease()", () => {
 		expect(out).toMatch("Queued 4 packages! Starting release...");
 		expect(out).toMatch("Created tag msr-test-a@1.1.0");
 		expect(out).toMatch("Created tag msr-test-b@1.0.1");
-		expect(out).toMatch("Created tag msr-test-c@1.0.1");
+		// expect(out).toMatch("Created tag msr-test-c@1.0.1");
 		expect(out).toMatch("There are no relevant changes, so no new version is released");
-		expect(out).toMatch("Released 3 of 4 packages, semantically!");
+		expect(out).toMatch("Released 2 of 4 packages, semantically!");
 
 		// A.
 		expect(result[3].name).toBe("msr-test-a");
@@ -731,7 +728,7 @@ describe("multiSemanticRelease()", () => {
 		});
 		expect(result[3].result.nextRelease.notes).toMatch("# msr-test-a [1.1.0]");
 		expect(result[3].result.nextRelease.notes).toMatch("### Features\n\n* **aaa:** Add missing text file");
-		expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
+		// expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
 
 		// B.
 		expect(result[2].name).toBe("msr-test-b");
@@ -755,23 +752,24 @@ describe("multiSemanticRelease()", () => {
 
 		// C.
 		expect(result[0].name).toBe("msr-test-c");
-		expect(result[0].result.lastRelease).toEqual({
-			channels: [null],
-			gitHead: sha1,
-			gitTag: "msr-test-c@1.0.0",
-			name: "msr-test-c@1.0.0",
-			version: "1.0.0",
-		});
-		expect(result[0].result.nextRelease).toMatchObject({
-			gitHead: sha2,
-			gitTag: "msr-test-c@1.0.1",
-			type: "patch",
-			version: "1.0.1",
-		});
-		expect(result[0].result.nextRelease.notes).toMatch("# msr-test-c [1.0.1]");
-		expect(result[0].result.nextRelease.notes).not.toMatch("### Features");
-		expect(result[0].result.nextRelease.notes).not.toMatch("### Bug Fixes");
-		expect(result[0].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.1");
+		expect(result[0].result).toBe(false);
+		// expect(result[0].result.lastRelease).toEqual({
+		// 	channels: [null],
+		// 	gitHead: sha1,
+		// 	gitTag: "msr-test-c@1.0.0",
+		// 	name: "msr-test-c@1.0.0",
+		// 	version: "1.0.0",
+		// });
+		// expect(result[0].result.nextRelease).toMatchObject({
+		// 	gitHead: sha2,
+		// 	gitTag: "msr-test-c@1.0.1",
+		// 	type: "patch",
+		// 	version: "1.0.1",
+		// });
+		// expect(result[0].result.nextRelease.notes).toMatch("# msr-test-c [1.0.1]");
+		// expect(result[0].result.nextRelease.notes).not.toMatch("### Features");
+		// expect(result[0].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		// expect(result[0].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.1");
 
 		// D.
 		expect(result[1].name).toBe("msr-test-d");
@@ -783,7 +781,7 @@ describe("multiSemanticRelease()", () => {
 		// Check manifests.
 		expect(require(`${cwd}/packages/a/package.json`)).toMatchObject({
 			peerDependencies: {
-				"msr-test-c": "1.0.1",
+				"msr-test-c": "1.0.0",
 			},
 		});
 		expect(require(`${cwd}/packages/b/package.json`)).toMatchObject({
@@ -791,13 +789,12 @@ describe("multiSemanticRelease()", () => {
 				"msr-test-a": "1.1.0",
 			},
 			devDependencies: {
-				"msr-test-c": "1.0.1",
+				"msr-test-c": "1.0.0",
 			},
 		});
 		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
 			devDependencies: {
-				"msr-test-b": "1.0.1",
-				"msr-test-d": "1.0.0",
+				"msr-test-d": "*",
 			},
 		});
 	});
@@ -1002,7 +999,7 @@ describe("multiSemanticRelease()", () => {
 		// Check manifests.
 		expect(require(`${cwd}/packages/a/package.json`)).toMatchObject({
 			peerDependencies: {
-				"msr-test-c": "1.0.1",
+				"msr-test-c": "1.0.0",
 			},
 		});
 		expect(require(`${cwd}/packages/b/package.json`)).toMatchObject({
@@ -1010,13 +1007,12 @@ describe("multiSemanticRelease()", () => {
 				"msr-test-a": "1.1.0",
 			},
 			devDependencies: {
-				"msr-test-c": "1.0.1",
+				"msr-test-c": "1.0.0",
 			},
 		});
 		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
 			devDependencies: {
-				"msr-test-b": "1.0.1",
-				"msr-test-d": "1.0.0",
+				"msr-test-d": "*",
 			},
 		});
 	});
@@ -1240,37 +1236,37 @@ describe("multiSemanticRelease()", () => {
 		});
 	});
 
-	test("ValueError if sequentialPrepare is enabled on a cyclic project", async () => {
-		// Create Git repo with copy of Yarn workspaces fixture.
-		const cwd = gitInit();
-		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
-		const sha = gitCommitAll(cwd, "feat: Initial release");
-		const url = gitInitOrigin(cwd);
-		gitPush(cwd);
-
-		// Capture output.
-		const stdout = new WritableStreamBuffer();
-		const stderr = new WritableStreamBuffer();
-
-		// Call multiSemanticRelease()
-		// Doesn't include plugins that actually publish.
-		const result = multiSemanticRelease(
-			[
-				`packages/a/package.json`,
-				`packages/b/package.json`,
-				`packages/c/package.json`,
-				`packages/d/package.json`,
-			],
-			{},
-			{ cwd, stdout, stderr },
-			{ sequentialPrepare: true, deps: {} }
-		);
-
-		await expect(result).rejects.toBeInstanceOf(ValueError);
-		await expect(result).rejects.toMatchObject({
-			message: expect.stringMatching("can't have cyclic with sequentialPrepare option"),
-		});
-	});
+	// test("ValueError if sequentialPrepare is enabled on a cyclic project", async () => {
+	// 	// Create Git repo with copy of Yarn workspaces fixture.
+	// 	const cwd = gitInit();
+	// 	copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+	// 	const sha = gitCommitAll(cwd, "feat: Initial release");
+	// 	const url = gitInitOrigin(cwd);
+	// 	gitPush(cwd);
+	//
+	// 	// Capture output.
+	// 	const stdout = new WritableStreamBuffer();
+	// 	const stderr = new WritableStreamBuffer();
+	//
+	// 	// Call multiSemanticRelease()
+	// 	// Doesn't include plugins that actually publish.
+	// 	const result = multiSemanticRelease(
+	// 		[
+	// 			`packages/a/package.json`,
+	// 			`packages/b/package.json`,
+	// 			`packages/c/package.json`,
+	// 			`packages/d/package.json`,
+	// 		],
+	// 		{},
+	// 		{ cwd, stdout, stderr },
+	// 		{ sequentialPrepare: true, deps: {} }
+	// 	);
+	//
+	// 	await expect(result).rejects.toBeInstanceOf(ValueError);
+	// 	await expect(result).rejects.toMatchObject({
+	// 		message: expect.stringMatching("can't have cyclic with sequentialPrepare option"),
+	// 	});
+	// });
 
 	test("Generated tag with custom version format", async () => {
 		// Create Git repo with copy of Yarn workspaces fixture.

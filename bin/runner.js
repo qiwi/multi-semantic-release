@@ -34,13 +34,13 @@ export default async (flags) => {
 			},
 			(error) => {
 				// Log out errors.
-				console.error(`[multi-semantic-release]:`, error);
+				console.error(`[multi-semantic-release111]:`, error);
 				process.exit(1);
 			}
 		);
 	} catch (error) {
 		// Log out errors.
 		console.error(`[multi-semantic-release]:`, error);
-		process.exit(1);
+		// process.exit(1);
 	}
 };
