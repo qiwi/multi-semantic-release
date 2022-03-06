@@ -1,3 +1,26 @@
+# [6.0.0](https://github.com/qiwi/multi-semantic-release/compare/v5.0.3...v6.0.0) (2022-03-06)
+
+
+### Bug Fixes
+
+* up deps, fix some vuls ([2d5cf86](https://github.com/qiwi/multi-semantic-release/commit/2d5cf8660c0ebb2f97fa7476df1cd4fed63d07d1))
+
+
+### Code Refactoring
+
+* move to ESM ([99fffa9](https://github.com/qiwi/multi-semantic-release/commit/99fffa9c82b21a1578d376ac206e46d32e6b7ae3))
+
+
+### Features
+
+* replace synchronizer with @semrel-extra/topo ([ddd1032](https://github.com/qiwi/multi-semantic-release/commit/ddd10320487f5367aff15dd36c03c5bd60046b16))
+
+
+### BREAKING CHANGES
+
+* drop support for cycled monorepos
+* require Node.js v12
+
 ## [5.0.3](https://github.com/qiwi/multi-semantic-release/compare/v5.0.2...v5.0.3) (2022-03-05)
 
 
