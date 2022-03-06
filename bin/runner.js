@@ -1,4 +1,4 @@
-import {createRequire} from "module";
+import { createRequire } from "module";
 
 export default async (flags) => {
 	const require = createRequire(import.meta.url);

@@ -45,8 +45,4 @@ function createNewTestingFiles(folders, cwd) {
 }
 
 // Exports.
-export {
-	copyDirectory,
-	isDirectory,
-	createNewTestingFiles,
-};
+export { copyDirectory, isDirectory, createNewTestingFiles };

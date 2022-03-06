@@ -1,7 +1,7 @@
 {
 	"parserOptions": {
 		"sourceType": "module",
-		"ecmaVersion": 2019,
+		"ecmaVersion": 2020,
 		"experimentalObjectRestSpread": true
 	},
 	"extends": [

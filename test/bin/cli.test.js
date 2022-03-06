@@ -1,6 +1,6 @@
 import { execa } from "execa";
-import {dirname} from "node:path";
-import {fileURLToPath} from "node:url";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { copyDirectory } from "../helpers/file.js";
 import {
@@ -14,8 +14,7 @@ import {
 	gitGetTags,
 } from "../helpers/git.js";
 
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Tests.
 describe("multi-semantic-release CLI", () => {
@@ -36,12 +35,12 @@ describe("multi-semantic-release CLI", () => {
 		// expect(out).toMatch("Released 4 of 4 packages, semantically!");
 
 		try {
-			await execa("node", [filepath, "-- --no-sequential-prepare"], {cwd})
-		} catch(res) {
-			const {stdout, stderr, exitCode} = res
+			await execa("node", [filepath, "-- --no-sequential-prepare"], { cwd });
+		} catch (res) {
+			const { stdout, stderr, exitCode } = res;
 
 			expect(stdout).toMatch("Started multirelease! Loading 4 packages...");
-			expect(stderr).toMatch("Error: Cyclic dependency, node was:\"msr-test-c\"");
+			expect(stderr).toMatch('Error: Cyclic dependency, node was:"msr-test-c"');
 			expect(exitCode).toBe(1);
 		}
 	});
@@ -58,7 +57,8 @@ describe("multi-semantic-release CLI", () => {
 		const filepath = `${__dirname}/../../bin/cli.js`;
 
 		// Run via command line.
-		const out = (await execa("node", [filepath, "-- --ignore-packages=packages/c/**,packages/d/**"], { cwd })).stdout;
+		const out = (await execa("node", [filepath, "-- --ignore-packages=packages/c/**,packages/d/**"], { cwd }))
+			.stdout;
 		expect(out).toMatch("Started multirelease! Loading 2 packages...");
 		expect(out).toMatch("Released 2 of 2 packages, semantically!");
 	});

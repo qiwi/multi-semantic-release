@@ -1,9 +1,9 @@
 import { resolve } from "path";
 import getPackagePaths from "../../lib/getPackagePaths.js";
-import {dirname} from "node:path";
-import {fileURLToPath} from "node:url";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Tests.
 describe("getPackagePaths()", () => {

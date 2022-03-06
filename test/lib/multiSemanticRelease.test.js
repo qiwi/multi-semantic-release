@@ -2,8 +2,8 @@ import { ValueError } from "blork";
 import { writeFileSync } from "fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createRequire } from 'module';
-import {jest} from '@jest/globals';
+import { createRequire } from "module";
+import { jest } from "@jest/globals";
 
 import signale from "signale";
 import { WritableStreamBuffer } from "stream-buffers";
@@ -25,7 +25,6 @@ const require = createRequire(import.meta.url);
 
 // Clear mocks before tests.
 beforeEach(() => {
-
 	jest.clearAllMocks(); // Clear all mocks.
 	// require.cache = {}; // Clear the require cache so modules are loaded fresh.
 });
