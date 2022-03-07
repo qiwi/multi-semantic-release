@@ -1,3 +1,10 @@
+## [6.0.2](https://github.com/qiwi/multi-semantic-release/compare/v6.0.1...v6.0.2) (2022-03-07)
+
+
+### Bug Fixes
+
+* rm npm from peer deps ([307e505](https://github.com/qiwi/multi-semantic-release/commit/307e5057f12a9f616bdb432db2708e5193c34d4f))
+
 ## [6.0.1](https://github.com/qiwi/multi-semantic-release/compare/v6.0.0...v6.0.1) (2022-03-06)
 
 
