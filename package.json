@@ -78,9 +78,6 @@
 		"stream-buffers": "^3.0.2",
 		"tempy": "^2.0.0"
 	},
-	"peerDependencies": {
-		"npm": "8.4.1"
-	},
 	"devDependencies": {
 		"@commitlint/config-conventional": "^16.2.1",
 		"@semantic-release/changelog": "^6.0.1",
