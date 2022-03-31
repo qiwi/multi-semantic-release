@@ -37,6 +37,7 @@ function gitInit(branch = "master") {
 
 	// Disable GPG signing for commits.
 	gitConfig(cwd, "commit.gpgsign", false);
+	gitUser(cwd);
 
 	// Return directory.
 	return cwd;
@@ -168,6 +169,19 @@ function gitPush(cwd, remote = "origin", branch = "master") {
 
 	// Await command.
 	execaSync("git", ["push", "--tags", remote, `HEAD:${branch}`], { cwd });
+}
+
+/**
+ * Sets git user data.
+ *
+ * @param {string} cwd The CWD of the Git repository.
+ * @param {string} name Committer name.
+ * @param {string} email Committer email.
+ * @returns {void} Return void.
+ */
+function gitUser(cwd, name = "Foo Bar", email = "email@foo.bar") {
+	execaSync("git", ["config", "--local", "user.email", email], { cwd });
+	execaSync("git", ["config", "--local", "user.name", name], { cwd });
 }
 
 // Branches.
