@@ -30,9 +30,10 @@ CLI flag options:
     --debug Output debugging information.
     --sequential-init  Avoid hypothetical concurrent initialization collisions.
     --first-parent Apply commit filtering to current branch only.
+    --ignore-private Exclude private packages. True by default.
 	--ignore-packages  Packages list to be ignored on bumping process (append to the ones that already exist at package.json workspaces)
     --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
-		--deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
+	--deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
     --tag-format Format to use for creating tag names. Should include "name" and "version" vars. Default: "${name}@${version}" generates "package-name@1.0.0"
     --help Help info.
 
