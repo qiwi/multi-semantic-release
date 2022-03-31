@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/qiwi/multi-semantic-release/compare/v6.0.2...v6.1.0) (2022-03-31)
+
+
+### Features
+
+* introduce `ignorePrivate` flag ([e4891c9](https://github.com/qiwi/multi-semantic-release/commit/e4891c9f754afcc7fe87e84c390560a3fc5feef8)), closes [#66](https://github.com/qiwi/multi-semantic-release/issues/66)
+
 ## [6.0.2](https://github.com/qiwi/multi-semantic-release/compare/v6.0.1...v6.0.2) (2022-03-07)
 
 
