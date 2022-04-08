@@ -23,10 +23,10 @@
 	],
 	"scripts": {
 		"watch": "jest --watchAll",
-		"jest": "TRAVIS_PULL_REQUEST_BRANCH=master NODE_OPTIONS=--experimental-vm-modules ./node_modules/.bin/jest --coverage",
 		"lint": "eslint ./",
 		"lint:fix": "eslint --fix ./",
-		"test": "yarn lint && yarn jest",
+		"test": "yarn lint && yarn test:unit",
+		"test:unit": "NODE_OPTIONS=--experimental-vm-modules ./node_modules/.bin/jest --coverage",
 		"test:report": "yarn test && yarn coveralls:push",
 		"codeclimate:push": "codeclimate-test-reporter < ./coverage/lcov.info",
 		"coveralls:push": "cat ./coverage/lcov.info | coveralls",
@@ -34,11 +34,6 @@
 		"build": "echo 'There is no need for build && exit 0'",
 		"postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
 		"publish:beta": "npm publish --no-git-tag-version --tag beta"
-	},
-	"_husky": {
-		"hooks": {
-			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-		}
 	},
 	"commitlint": {
 		"extends": [

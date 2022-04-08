@@ -20,7 +20,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -39,7 +40,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -50,7 +52,7 @@ jobs:
 
       - name: Test & push coverage
         if: matrix.node-version == '16' && matrix.os == 'ubuntu-20.04'
-        run: test
+        run: yarn test
 
   release:
     name: Release

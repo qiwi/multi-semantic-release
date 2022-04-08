@@ -1,6 +1,6 @@
 import { isAbsolute, join } from "path";
 import tempy from "tempy";
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
+import { writeFileSync, mkdirSync } from "fs";
 import getCommitsFiltered from "../../lib/getCommitsFiltered.js";
 import { gitInit, gitCommitAll } from "../helpers/git.js";
 
