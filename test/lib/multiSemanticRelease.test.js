@@ -1,27 +1,14 @@
-import { ValueError } from "blork";
 import { writeFileSync } from "fs";
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 import { createRequire } from "module";
 import { jest } from "@jest/globals";
 
-import signale from "signale";
 import { WritableStreamBuffer } from "stream-buffers";
 import { copyDirectory, createNewTestingFiles } from "../helpers/file.js";
-import {
-	gitInit,
-	gitAdd,
-	gitCommit,
-	gitCommitAll,
-	gitInitOrigin,
-	gitPush,
-	gitTag,
-	gitGetTags,
-	gitGetLog,
-} from "../helpers/git";
+import { gitInit, gitAdd, gitCommit, gitCommitAll, gitInitOrigin, gitPush, gitTag, gitGetLog } from "../helpers/git";
 import multiSemanticRelease from "../../lib/multiSemanticRelease.js";
 
 const require = createRequire(import.meta.url);
+const env = {};
 
 // Clear mocks before tests.
 beforeEach(() => {
@@ -53,7 +40,7 @@ describe("multiSemanticRelease()", () => {
 				`packages/d/package.json`,
 			],
 			{},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Get stdout and stderr output.
@@ -173,7 +160,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master", prerelease: "dev" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Get stdout and stderr output.
@@ -293,7 +280,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master", prerelease: "dev" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Add new testing files for a new release.
@@ -312,7 +299,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master", prerelease: "dev" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Get stdout and stderr output.
@@ -377,7 +364,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Add new testing files for a new release.
@@ -397,7 +384,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master", prerelease: "beta" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Get stdout and stderr output.
@@ -468,7 +455,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master", prerelease: "dev" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Add new testing files for a new release.
@@ -487,7 +474,7 @@ describe("multiSemanticRelease()", () => {
 			{
 				branches: [{ name: "master", prerelease: "dev" }, { name: "release" }],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Get stdout and stderr output.
@@ -638,7 +625,7 @@ describe("multiSemanticRelease()", () => {
 				`packages/b/package.json`,
 			],
 			{},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Get stdout and stderr output.
@@ -692,7 +679,7 @@ describe("multiSemanticRelease()", () => {
 				`packages/a/package.json`,
 			],
 			{},
-			{ cwd, stdout, stderr },
+			{ cwd, stdout, stderr, env },
 			{ deps: {}, dryRun: false }
 		);
 
@@ -841,7 +828,7 @@ describe("multiSemanticRelease()", () => {
 					},
 				],
 			},
-			{ cwd, stdout, stderr },
+			{ cwd, stdout, stderr, env },
 			{ deps: {}, dryRun: false, sequentialPrepare: true }
 		);
 
@@ -924,7 +911,7 @@ describe("multiSemanticRelease()", () => {
 		const result = await multiSemanticRelease(
 			[`packages/c/package.json`, `packages/d/package.json`],
 			{},
-			{ cwd, stdout, stderr },
+			{ cwd, stdout, stderr, env },
 			{ deps: {}, dryRun: false, sequentialPrepare: true }
 		);
 
@@ -991,7 +978,7 @@ describe("multiSemanticRelease()", () => {
 				`packages/a/package.json`,
 			],
 			{},
-			{ cwd, stdout, stderr },
+			{ cwd, stdout, stderr, env },
 			{ sequentialInit: true }
 		);
 
@@ -1033,7 +1020,7 @@ describe("multiSemanticRelease()", () => {
 			const result = await multiSemanticRelease(
 				[`packages/a/package.json`, `packages/c/package.json`],
 				{},
-				{ cwd, stdout, stderr }
+				{ cwd, stdout, stderr, env }
 			);
 
 			// Not reached.
@@ -1073,7 +1060,7 @@ describe("multiSemanticRelease()", () => {
 				plugins: ["@semantic-release/release-notes-generator", plugin],
 				analyzeCommits: ["@semantic-release/commit-analyzer"],
 			},
-			{ cwd, stdout, stderr }
+			{ cwd, stdout, stderr, env }
 		);
 
 		// Check calls.
@@ -1127,7 +1114,7 @@ describe("multiSemanticRelease()", () => {
 				],
 				analyzeCommits: ["@semantic-release/commit-analyzer"],
 			},
-			{ cwd, stdout, stderr },
+			{ cwd, stdout, stderr, env },
 			{ deps: {}, dryRun: false }
 		);
 
@@ -1163,7 +1150,7 @@ describe("multiSemanticRelease()", () => {
 						},
 					],
 				},
-				{ cwd, stdout, stderr }
+				{ cwd, stdout, stderr, env }
 			);
 
 			// Not reached.
@@ -1282,7 +1269,7 @@ describe("multiSemanticRelease()", () => {
 		await multiSemanticRelease(
 			[`packages/a/package.json`],
 			{},
-			{ cwd, stdout, stderr },
+			{ cwd, stdout, stderr, env },
 			{ tagFormat: "${name}/${version}", deps: {} }
 		);
 

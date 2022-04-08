@@ -1,4 +1,3 @@
-import { tag } from "semantic-release/lib/git.js";
 import { getHighestVersion, getLowestVersion, getLatestVersion, tagsToVersions } from "../../lib/utils.js";
 
 describe("tagsToVersions()", () => {
