@@ -35,7 +35,7 @@ describe("multi-semantic-release CLI", () => {
 		// expect(out).toMatch("Released 4 of 4 packages, semantically!");
 
 		try {
-			await execa("node", [filepath, "-- --no-sequential-prepare --no-ci"], { cwd });
+			await execa("node", [filepath, "-- --no-sequential-prepare", "--no-ci"], { cwd });
 		} catch (res) {
 			const { stdout, stderr, exitCode } = res;
 
@@ -58,7 +58,7 @@ describe("multi-semantic-release CLI", () => {
 
 		// Run via command line.
 		const out = (
-			await execa("node", [filepath, "-- --ignore-packages=packages/c/**,packages/d/**  --no-ci"], { cwd })
+			await execa("node", [filepath, "-- --ignore-packages=packages/c/**,packages/d/**", "--no-ci"], { cwd })
 		).stdout;
 		expect(out).toMatch("Started multirelease! Loading 2 packages...");
 		expect(out).toMatch("Released 2 of 2 packages, semantically!");
