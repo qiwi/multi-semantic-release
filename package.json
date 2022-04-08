@@ -73,7 +73,7 @@
 		"meow": "^10.1.2",
 		"promise-events": "^0.2.4",
 		"semantic-release": "^19.0.2",
-		"semver": "^7.3.5",
+		"semver": "^7.3.6",
 		"signale": "^1.4.0",
 		"stream-buffers": "^3.0.2",
 		"tempy": "^2.0.0"
@@ -92,7 +92,7 @@
 		"file-url": "^4.0.0",
 		"husky": "^7.0.4",
 		"jest": "^27.5.1",
-		"prettier": "^2.6.1"
+		"prettier": "^2.6.2"
 	},
 	"release": {
 		"branch": "master",
