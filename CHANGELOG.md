@@ -1,3 +1,11 @@
+## [6.1.1](https://github.com/qiwi/multi-semantic-release/compare/v6.1.0...v6.1.1) (2022-04-09)
+
+
+### Bug Fixes
+
+* dont fetch tags if tags arg is empty array ([3a79558](https://github.com/qiwi/multi-semantic-release/commit/3a7955861d7782dd2257661d955a2adbf319627f))
+* print queued pkg count instead of total ([d893a7f](https://github.com/qiwi/multi-semantic-release/commit/d893a7ff9f6f4d85377a1b61144842f3d07657a7))
+
 # [6.1.0](https://github.com/qiwi/multi-semantic-release/compare/v6.0.2...v6.1.0) (2022-03-31)
 
 
