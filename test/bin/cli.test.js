@@ -1,5 +1,5 @@
 import { execa } from "execa";
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { copyDirectory } from "../helpers/file.js";
@@ -15,6 +15,10 @@ import {
 } from "../helpers/git.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const msrBin = resolve(__dirname, "../../bin/cli.js");
+const env = {
+	PATH: process.env.PATH,
+};
 
 // Tests.
 describe("multi-semantic-release CLI", () => {
@@ -26,16 +30,13 @@ describe("multi-semantic-release CLI", () => {
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
 
-		// Path to CLI command.
-		const filepath = `${__dirname}/../../bin/cli.js`;
-
 		// Run via command line.
 		// const out = (await execa("node", [filepath, "-- --no-sequential-prepare"], { cwd })).stdout;
 		// expect(out).toMatch("Started multirelease! Loading 4 packages...");
 		// expect(out).toMatch("Released 4 of 4 packages, semantically!");
 
 		try {
-			await execa("node", [filepath, "-- --no-sequential-prepare", "--no-ci"], { cwd });
+			await execa("node", [msrBin, "-- --no-sequential-prepare"], { cwd, extendEnv: false, env });
 		} catch (res) {
 			const { stdout, stderr, exitCode } = res;
 
@@ -53,12 +54,13 @@ describe("multi-semantic-release CLI", () => {
 		const url = gitInitOrigin(cwd);
 		gitPush(cwd);
 
-		// Path to CLI command.
-		const filepath = `${__dirname}/../../bin/cli.js`;
-
 		// Run via command line.
 		const out = (
-			await execa("node", [filepath, "-- --ignore-packages=packages/c/**,packages/d/**", "--no-ci"], { cwd })
+			await execa("node", [msrBin, "-- --ignore-packages=packages/c/**,packages/d/**"], {
+				cwd,
+				extendEnv: false,
+				env,
+			})
 		).stdout;
 		expect(out).toMatch("Started multirelease! Loading 2 packages...");
 		expect(out).toMatch("Released 2 of 2 packages, semantically!");
