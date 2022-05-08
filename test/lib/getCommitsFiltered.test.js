@@ -1,5 +1,5 @@
 import { isAbsolute, join } from "path";
-import tempy from "tempy";
+import { temporaryDirectory } from "tempy";
 import { writeFileSync, mkdirSync } from "fs";
 import getCommitsFiltered from "../../lib/getCommitsFiltered.js";
 import { gitInit, gitCommitAll } from "../helpers/git.js";
@@ -64,14 +64,14 @@ describe("getCommitsFiltered()", () => {
 		await expect(getCommitsFiltered("aaa", ".")).rejects.toMatchObject({
 			message: expect.stringMatching("cwd: Must be directory that exists in the filesystem"),
 		});
-		const cwd = tempy.directory();
+		const cwd = temporaryDirectory();
 		await expect(getCommitsFiltered(`${cwd}/abc`, ".")).rejects.toBeInstanceOf(TypeError);
 		await expect(getCommitsFiltered(`${cwd}/abc`, ".")).rejects.toMatchObject({
 			message: expect.stringMatching("cwd: Must be directory that exists in the filesystem"),
 		});
 	});
 	test("TypeError if dir is not path to directory", async () => {
-		const cwd = tempy.directory();
+		const cwd = temporaryDirectory();
 		await expect(getCommitsFiltered(cwd, 123)).rejects.toBeInstanceOf(TypeError);
 		await expect(getCommitsFiltered(cwd, 123)).rejects.toMatchObject({
 			message: expect.stringMatching("dir: Must be valid path"),
@@ -86,7 +86,7 @@ describe("getCommitsFiltered()", () => {
 		});
 	});
 	test("TypeError if dir is equal to cwd", async () => {
-		const cwd = tempy.directory();
+		const cwd = temporaryDirectory();
 		await expect(getCommitsFiltered(cwd, cwd)).rejects.toBeInstanceOf(TypeError);
 		await expect(getCommitsFiltered(cwd, cwd)).rejects.toMatchObject({
 			message: expect.stringMatching("dir: Must not be equal to cwd"),
@@ -97,8 +97,8 @@ describe("getCommitsFiltered()", () => {
 		});
 	});
 	test("TypeError if dir is not inside cwd", async () => {
-		const cwd = tempy.directory();
-		const dir = tempy.directory();
+		const cwd = temporaryDirectory();
+		const dir = temporaryDirectory();
 		await expect(getCommitsFiltered(cwd, dir)).rejects.toBeInstanceOf(TypeError);
 		await expect(getCommitsFiltered(cwd, dir)).rejects.toMatchObject({
 			message: expect.stringMatching("dir: Must be inside cwd"),
@@ -109,7 +109,7 @@ describe("getCommitsFiltered()", () => {
 		});
 	});
 	test("TypeError if lastHead is not 40char alphanumeric Git SHA hash", async () => {
-		const cwd = tempy.directory();
+		const cwd = temporaryDirectory();
 		mkdirSync(join(cwd, "dir"));
 		await expect(getCommitsFiltered(cwd, "dir", false)).rejects.toBeInstanceOf(TypeError);
 		await expect(getCommitsFiltered(cwd, "dir", false)).rejects.toMatchObject({
