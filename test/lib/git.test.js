@@ -1,4 +1,4 @@
-import tempy from "tempy";
+import { temporaryDirectory } from "tempy";
 import { WritableStreamBuffer } from "stream-buffers";
 
 import { copyDirectory, createNewTestingFiles } from "../helpers/file.js";
@@ -83,7 +83,7 @@ test("Fetch only prerelease tags", async () => {
 });
 
 test("Throws error if obtaining the tags fails", () => {
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 
 	const t = () => {
 		getTags("master", { cwd });
