@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import meow from "meow";
+import process from "process";
 import { toPairs, set } from "lodash-es";
 import runner from "./runner.js";
 
@@ -29,6 +30,10 @@ const cli = meow(
 `,
 	{
 		importMeta: import.meta,
+		get argv() {
+			const argvStart = process.argv.includes("--") ? process.argv.indexOf("--") + 1 : 2;
+			return process.argv.slice(argvStart);
+		},
 		flags: {
 			sequentialInit: {
 				type: "boolean",
