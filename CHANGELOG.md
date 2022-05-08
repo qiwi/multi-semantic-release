@@ -1,3 +1,10 @@
+# [6.2.0](https://github.com/qiwi/multi-semantic-release/compare/v6.1.1...v6.2.0) (2022-05-08)
+
+
+### Features
+
+* prefer nested CLI flags ([1bf08cc](https://github.com/qiwi/multi-semantic-release/commit/1bf08ccbc722858febcaaaac2f8e0ba72638460c))
+
 ## [6.1.1](https://github.com/qiwi/multi-semantic-release/compare/v6.1.0...v6.1.1) (2022-04-09)
 
 
