@@ -18,6 +18,7 @@ const cli = meow(
     --first-parent Apply commit filtering to current branch only.
     --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
     --deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
+    --deps.prefix Optional prefix to be attached to the next dep version if '--deps.bump' set to 'override'. Supported values: '^' | '~' | '' (empty string as default).
     --ignore-packages  Packages list to be ignored on bumping process
     --ignore-private Exclude private packages. Enabled by default, pass 'no-ignore-private' to disable.
     --tag-format Format to use for creating tag names. Should include "name" and "version" vars. Default: "\${name}@\${version}" generates "package-name@1.0.0"
@@ -55,6 +56,10 @@ const cli = meow(
 			"deps.release": {
 				type: "string",
 				default: "patch",
+			},
+			"deps.prefix": {
+				type: "string",
+				default: "",
 			},
 			ignorePrivate: {
 				type: "boolean",

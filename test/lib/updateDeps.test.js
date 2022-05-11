@@ -148,6 +148,34 @@ describe("resolveReleaseType()", () => {
 	});
 });
 
+it("`override` + `prefix` injects carets to the manifest", () => {
+	const pkgB = { name: "b", _nextType: false, localDeps: [], _lastRelease: { version: "1.0.0" } };
+	const pkgC = { name: "c", _nextType: "minor", localDeps: [], _lastRelease: { version: "1.0.0" } };
+	const pkgD = { name: "d", _nextType: "patch", localDeps: [], _lastRelease: { version: "1.0.0" } };
+	const pkgA = {
+		name: "a",
+		manifest: { dependencies: { b: "1.0.0", c: "1.0.0", d: "1.0.0" } },
+		_nextType: false,
+		localDeps: [pkgB, pkgC, pkgD],
+	};
+	const pkg = {
+		name: "root",
+		manifest: { dependencies: { a: "1.0.0" } },
+		_nextType: undefined,
+		localDeps: [pkgA],
+	};
+
+	const type = resolveReleaseType(pkg, "override", "patch", [], "^");
+
+	expect(type).toBe("patch");
+	expect(pkg._nextType).toBe("patch");
+
+	expect(pkg.manifest.dependencies.a).toBe("^1.0.0");
+	expect(pkgA.manifest.dependencies.b).toBe("^1.0.0");
+	expect(pkgA.manifest.dependencies.c).toBe("^1.1.0");
+	expect(pkgA.manifest.dependencies.d).toBe("^1.0.1");
+});
+
 describe("getNextVersion()", () => {
 	// prettier-ignore
 	const cases = [
