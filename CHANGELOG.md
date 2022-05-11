@@ -1,3 +1,10 @@
+# [6.3.0](https://github.com/qiwi/multi-semantic-release/compare/v6.2.0...v6.3.0) (2022-05-11)
+
+
+### Features
+
+* introduce `deps.prefix` flag to inject carets ([c3f4529](https://github.com/qiwi/multi-semantic-release/commit/c3f452976ac6642f8a285f2e9faa6521a5bba919))
+
 # [6.2.0](https://github.com/qiwi/multi-semantic-release/compare/v6.1.1...v6.2.0) (2022-05-08)
 
 
