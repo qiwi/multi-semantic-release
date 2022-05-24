@@ -1,3 +1,11 @@
+# [6.4.0](https://github.com/qiwi/multi-semantic-release/compare/v6.3.0...v6.4.0) (2022-05-24)
+
+
+### Features
+
+* support `${version}+${name}` tag format ([c53fefb](https://github.com/qiwi/multi-semantic-release/commit/c53fefb6e7ae8b3d16dbc235320c4f99d6ed4afc)), closes [#71](https://github.com/qiwi/multi-semantic-release/issues/71)
+* support `release.config.cjs` ([a6b9370](https://github.com/qiwi/multi-semantic-release/commit/a6b93706964fc5c60986392c21404ccdef4ad01b))
+
 # [6.3.0](https://github.com/qiwi/multi-semantic-release/compare/v6.2.0...v6.3.0) (2022-05-11)
 
 
