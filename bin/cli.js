@@ -35,47 +35,6 @@ const cli = meow(
 			const argvStart = process.argv.includes("--") ? process.argv.indexOf("--") + 1 : 2;
 			return process.argv.slice(argvStart);
 		},
-		flags: {
-			sequentialInit: {
-				type: "boolean",
-			},
-			sequentialPrepare: {
-				type: "boolean",
-				default: true,
-			},
-			firstParent: {
-				type: "boolean",
-			},
-			debug: {
-				type: "boolean",
-			},
-			"deps.bump": {
-				type: "string",
-				default: "override",
-			},
-			"deps.release": {
-				type: "string",
-				default: "patch",
-			},
-			"deps.prefix": {
-				type: "string",
-				default: "",
-			},
-			ignorePrivate: {
-				type: "boolean",
-				default: true,
-			},
-			ignorePackages: {
-				type: "string",
-			},
-			tagFormat: {
-				type: "string",
-				default: "${name}@${version}",
-			},
-			dryRun: {
-				type: "boolean",
-			},
-		},
 	}
 );
 

@@ -68,14 +68,15 @@
 		"lodash-es": "^4.17.21",
 		"meow": "^10.1.2",
 		"promise-events": "^0.2.4",
+		"resolve-from": "^5.0.0",
 		"semantic-release": "^19.0.2",
 		"semver": "^7.3.7",
 		"signale": "^1.4.0",
 		"stream-buffers": "^3.0.2"
 	},
 	"devDependencies": {
-		"@jest/globals": "^28.1.0",
 		"@commitlint/config-conventional": "^17.0.0",
+		"@jest/globals": "^28.1.0",
 		"@semantic-release/changelog": "^6.0.1",
 		"@semantic-release/git": "^10.0.1",
 		"@semantic-release/github": "^8.0.4",

@@ -1,14 +1,11 @@
 import { createRequire } from "module";
 
-export default async (flags) => {
+export default async (cliFlags) => {
 	const require = createRequire(import.meta.url);
-
-	if (flags.debug) {
-		require("debug").enable("msr:*");
-	}
 
 	// Imports.
 	const getPackagePaths = (await import("../lib/getPackagePaths.js")).default;
+	const getConfigMultiSemrel = (await import("../lib/getConfigMultiSemrel.js")).default;
 	const multiSemanticRelease = (await import("../lib/multiSemanticRelease.js")).default;
 	const multisemrelPkgJson = require("../package.json");
 	const semrelPkgJson = require("semantic-release/package.json");
@@ -18,6 +15,12 @@ export default async (flags) => {
 
 	// Catch errors.
 	try {
+		const flags = await getConfigMultiSemrel(cwd, cliFlags);
+
+		if (flags.debug) {
+			require("debug").enable("msr:*");
+		}
+
 		console.log(`multi-semantic-release version: ${multisemrelPkgJson.version}`);
 		console.log(`semantic-release version: ${semrelPkgJson.version}`);
 		console.log(`flags: ${JSON.stringify(flags, null, 2)}`);
@@ -34,7 +37,7 @@ export default async (flags) => {
 			},
 			(error) => {
 				// Log out errors.
-				console.error(`[multi-semantic-release111]:`, error);
+				console.error(`[multi-semantic-release]:`, error);
 				process.exit(1);
 			}
 		);
