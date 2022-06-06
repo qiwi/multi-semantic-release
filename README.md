@@ -22,29 +22,80 @@ yarn add @qiwi/multi-semantic-release --dev
 multi-semantic-release
 ```
 
-CLI flag options:
+## Configuring Multi-Semantic-Release
 
-```sh
-  Options
-    --dry-run Dry run mode.
-    --debug Output debugging information.
-    --sequential-init  Avoid hypothetical concurrent initialization collisions.
-    --first-parent Apply commit filtering to current branch only.
-    --ignore-private Exclude private packages. True by default.
-    --ignore-packages  Packages list to be ignored on bumping process (append to the ones that already exist at package.json workspaces)
-    --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
-    --deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
-    --deps.prefix Optional prefix to be attached to the next version if `--deps.bump` set to `override`. Supported values: '^' | '~'` | '' (empty string, default).
-    --tag-format Format to use for creating tag names. Should include "name" and "version" vars. Default: "${name}@${version}" generates "package-name@1.0.0"
-    --help Help info.
+multi-semantic-release can be configured a number of ways:
 
-  Examples
-    $ multi-semantic-release --debug
-	$ multi-semantic-release --deps.bump=satisfy --deps.release=patch
-	$ multi-semantic-release --ignore-packages=packages/a/**,packages/b/**
+* A `.multi-releaserc` file, written in YAML or JSON, with optional extensions: `.yaml`/ `.yml`/ `.json`/ `.js`
+* A `multi-release.config.js` file that exports an object
+* A `multi-release` key in the workspace root package.json
+
+Alternatively some options may be set via CLI flags.
+
+**Note:** CLI arguments take precedence over options configured in the configuration file.
+
+### Options
+
+| Option | Type | CLI Flag | Description |
+| ------ | ---- | -------- | ----------- |
+| dryRun | `boolean` | `--dry-run` | Dry run mode. |
+| debug | `boolean` | `--debug` | Output debugging information. |
+| extends | `String \| Array` | N/A | List of modules or file paths containing a shareable configuration. If multiple shareable configurations are set, they will be imported in the order defined with each configuration option taking precedence over the options defined in the previous. |
+| sequentialInit | `boolean` | `--sequential-init` | Avoid hypothetical concurrent initialization collisions. |
+| sequentialPrepare | `boolean` | `--sequential-prepare` | Avoid hypothetical concurrent preparation collisions. **True by default.** |
+| firstParent | `boolean` | `--first-parent` | Apply commit filtering to current branch only. |
+| ignorePrivate | `boolean` | `--ignore-private` | Exclude private packages. **True by default.** |
+| ignorePackages | `String \| Array` | `--ignore-packages` | Packages list to be ignored on bumping process (appended to the ones that already exist at package.json workspaces). If using the CLI flag, supply a comma seperated list of strings. |
+| tagFormat | `String` | `--tag-format` | Format to use when creating tag names. Should include "name" and "version" vars. Default: `"${name}@${version}"` which generates "package-name@1.0.0" |
+| deps | `Object` | N/A | Depedency handling, see below for possible values. |
+
+### `deps` Options
+
+| Option | Type | CLI Flag | Description |
+| ------ | ---- | -------- | ----------- |
+| bump | `override \| satisfy \| inherit` | `--deps.bump` | Define deps version updating rule. Allowed: override, satisfy, inherit. **`override` by default.** |
+| release | `patch \| minor \| major \| inherit` | `--deps.release` | Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit. **`patch` by default** |
+| prefix | `'^' \| '~' \| ''` | `--deps.prefix` | Optional prefix to be attached to the next version if `bump` is set to `override`. **`''` by default**. |
+
+### Examples
+
+* Via multi-release key in the project's package.json file:
+
+```json
+{
+	"multi-release": {
+		"ignorePackages": [
+			"!packages/b/**",
+			"!packages/c/**"
+		],
+		"deps": {
+			"bump": "inherit"
+		}
+	}
+}
 ```
 
-## Configuration
+* Via `.multi-releaserc` file:
+
+```json
+{
+	"ignorePackages": [
+		"!packages/b/**",
+		"!packages/c/**"
+	],
+	"deps": {
+		"bump": "inherit"
+	}
+}
+```
+
+* Via CLI:
+
+```sh
+$ multi-semantic-release --ignore-packages=packages/a/**,packages/b/** --deps.bump=inherit
+```
+
+## Configuring Semantic-Release
 **MSR** requires **semrel** config to be added [in any supported format](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration) for each package or/and declared in repo root (`globalConfig` is extremely useful if all the modules have the same strategy of release).  
 NOTE config resolver joins `globalConfig` and `packageConfig` during execution.
 ```javascript
