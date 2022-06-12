@@ -1,0 +1,10 @@
+{
+	"branches": [
+		{
+			"name": "prerelease",
+			"channel": "prerelease",
+			"prerelease": "prerelease"
+		}
+	],
+	"tagFormat": "multi-semantic-release-test-c@v${version}"
+}
