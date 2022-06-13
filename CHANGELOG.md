@@ -1,3 +1,10 @@
+# [6.5.0](https://github.com/qiwi/multi-semantic-release/compare/v6.4.0...v6.5.0) (2022-06-13)
+
+
+### Features
+
+* added declarative config support ([c98ff10](https://github.com/qiwi/multi-semantic-release/commit/c98ff10a5f6993d9bdc46a51a5077525b93e127e))
+
 # [6.4.0](https://github.com/qiwi/multi-semantic-release/compare/v6.3.0...v6.4.0) (2022-05-24)
 
 
