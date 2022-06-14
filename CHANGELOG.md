@@ -1,3 +1,10 @@
+## [6.5.1](https://github.com/qiwi/multi-semantic-release/compare/v6.5.0...v6.5.1) (2022-06-14)
+
+
+### Bug Fixes
+
+* ensure msr cli flags take precedence over their semrel equivalents ([2be75fa](https://github.com/qiwi/multi-semantic-release/commit/2be75fa0e38169f2c8233bbef0891e2e00f9fdb0))
+
 # [6.5.0](https://github.com/qiwi/multi-semantic-release/compare/v6.4.0...v6.5.0) (2022-06-13)
 
 
