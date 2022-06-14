@@ -14,7 +14,7 @@ describe("getConfig()", () => {
 			ignorePrivate: true,
 			ignorePackages: [],
 			tagFormat: "${name}@${version}",
-			dryRun: false,
+			dryRun: undefined,
 			deps: {
 				bump: "override",
 				release: "patch",
@@ -26,6 +26,7 @@ describe("getConfig()", () => {
 	test("Only CLI flags and default options", async () => {
 		const cliFlags = {
 			debug: true,
+			dryRun: false,
 			ignorePackages: ["!packages/d/**"],
 			deps: {
 				bump: "inherit",
@@ -61,7 +62,7 @@ describe("getConfig()", () => {
 			ignorePrivate: true,
 			ignorePackages: ["!packages/d/**"],
 			tagFormat: "${name}@${version}",
-			dryRun: false,
+			dryRun: undefined,
 			deps: {
 				bump: "inherit",
 				release: "patch",
@@ -89,7 +90,7 @@ describe("getConfig()", () => {
 			ignorePrivate: true,
 			ignorePackages: ["!packages/d/**", "!packages/c/**"],
 			tagFormat: "${name}@${version}",
-			dryRun: false,
+			dryRun: undefined,
 			deps: {
 				bump: "inherit",
 				release: "minor",
@@ -110,7 +111,7 @@ describe("getConfig()", () => {
 			ignorePrivate: true,
 			ignorePackages: ["!packages/d/**"],
 			tagFormat: "${name}@${version}",
-			dryRun: false,
+			dryRun: undefined,
 			deps: {
 				bump: "satisfy",
 				release: "patch",
@@ -138,7 +139,7 @@ describe("getConfig()", () => {
 			ignorePrivate: true,
 			ignorePackages: ["!packages/d/**", "!packages/c/**"],
 			tagFormat: "${name}@${version}",
-			dryRun: false,
+			dryRun: undefined,
 			deps: {
 				bump: "satisfy",
 				release: "minor",
