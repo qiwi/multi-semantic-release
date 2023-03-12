@@ -1,7 +1,7 @@
 {
-	"name": "@qiwi/multi-semantic-release",
+	"name": "@teamcodafication/multi-semantic-release",
 	"author": "Dave Houlbrooke <dave@shax.com>",
-	"version": "6.5.1",
+	"version": "6.5.1-codafication.0",
 	"license": "0BSD",
 	"engines": {
 		"node": ">=12.20",
