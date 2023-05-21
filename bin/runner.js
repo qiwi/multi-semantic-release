@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import dbg from "debug";
 
 export default async (cliFlags) => {
 	const require = createRequire(import.meta.url);
@@ -21,13 +22,15 @@ export default async (cliFlags) => {
 			require("debug").enable("msr:*");
 		}
 
+		const debug = dbg("msr:runner");
+
 		console.log(`multi-semantic-release version: ${multisemrelPkgJson.version}`);
 		console.log(`semantic-release version: ${semrelPkgJson.version}`);
-		console.log(`flags: ${JSON.stringify(flags, null, 2)}`);
+		debug(`flags: ${JSON.stringify(flags, null, 2)}`);
 
 		// Get list of package.json paths according to workspaces.
 		const paths = getPackagePaths(cwd, flags.ignorePackages);
-		console.log("package paths", paths);
+		debug("package paths", paths);
 
 		// Do multirelease (log out any errors).
 		multiSemanticRelease(paths, {}, { cwd }, flags).then(
