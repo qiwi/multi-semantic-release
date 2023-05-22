@@ -40,6 +40,7 @@ Alternatively some options may be set via CLI flags.
 | ------ | ---- | -------- | ----------- |
 | dryRun | `boolean` | `--dry-run` | Dry run mode. |
 | debug | `boolean` | `--debug` | Output debugging information. |
+| silent | `boolean` | `--silent` | Do not print configuration information. |
 | extends | `String \| Array` | N/A | List of modules or file paths containing a shareable configuration. If multiple shareable configurations are set, they will be imported in the order defined with each configuration option taking precedence over the options defined in the previous. |
 | sequentialInit | `boolean` | `--sequential-init` | Avoid hypothetical concurrent initialization collisions. |
 | sequentialPrepare | `boolean` | `--sequential-prepare` | Avoid hypothetical concurrent preparation collisions. **True by default.** |
