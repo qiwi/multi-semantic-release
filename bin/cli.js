@@ -13,6 +13,7 @@ const cli = meow(
   Options
     --dry-run Dry run mode.
     --debug Output debugging information.
+    --verbose Also debug semantic release
     --silent Do not print configuration information.
     --sequential-init  Avoid hypothetical concurrent initialization collisions.
     --sequential-prepare  Avoid hypothetical concurrent preparation collisions. Do not use if your project have cyclic dependencies.
@@ -72,6 +73,9 @@ const cli = meow(
 				type: "boolean",
 			},
 			silent: {
+				type: "boolean",
+			},
+			verbose: {
 				type: "boolean",
 			},
 		},
