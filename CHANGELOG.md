@@ -1,3 +1,10 @@
+# [6.6.0](https://github.com/qiwi/multi-semantic-release/compare/v6.5.1...v6.6.0) (2023-05-23)
+
+
+### Features
+
+* introduce a silent mode([#88](https://github.com/qiwi/multi-semantic-release/issues/88)) ([47a27d8](https://github.com/qiwi/multi-semantic-release/commit/47a27d82f4639281fc7fbbd53c074ac40014c17f))
+
 ## [6.5.1](https://github.com/qiwi/multi-semantic-release/compare/v6.5.0...v6.5.1) (2022-06-14)
 
 
