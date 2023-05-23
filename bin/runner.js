@@ -17,11 +17,13 @@ export default async (cliFlags) => {
 	try {
 		const flags = await getConfigMultiSemrel(cwd, cliFlags);
 
+		const silent = flags.silent && !flags.debug;
+
 		if (flags.debug) {
 			require("debug").enable("msr:*");
 		}
 
-		if (!flags.silent) {
+		if (!silent) {
 			console.log(`multi-semantic-release version: ${multisemrelPkgJson.version}`);
 			console.log(`semantic-release version: ${semrelPkgJson.version}`);
 			console.log(`flags: ${JSON.stringify(flags, null, 2)}`);
@@ -29,7 +31,7 @@ export default async (cliFlags) => {
 
 		// Get list of package.json paths according to workspaces.
 		const paths = getPackagePaths(cwd, flags.ignorePackages);
-		if (!flags.silent) {
+		if (!silent) {
 			console.log("package paths", paths);
 		}
 
