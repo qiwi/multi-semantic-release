@@ -69,7 +69,7 @@
 		"meow": "^10.1.2",
 		"promise-events": "^0.2.4",
 		"resolve-from": "^5.0.0",
-		"semantic-release": "^19.0.2",
+		"semantic-release": "^19.0.5",
 		"semver": "^7.3.7",
 		"signale": "^1.4.0",
 		"stream-buffers": "^3.0.2"

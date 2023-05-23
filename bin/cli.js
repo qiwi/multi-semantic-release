@@ -13,6 +13,7 @@ const cli = meow(
   Options
     --dry-run Dry run mode.
     --debug Output debugging information.
+    --silent Do not print configuration information.
     --sequential-init  Avoid hypothetical concurrent initialization collisions.
     --sequential-prepare  Avoid hypothetical concurrent preparation collisions. Do not use if your project have cyclic dependencies.
     --first-parent Apply commit filtering to current branch only.
@@ -68,6 +69,9 @@ const cli = meow(
 				type: "string",
 			},
 			dryRun: {
+				type: "boolean",
+			},
+			silent: {
 				type: "boolean",
 			},
 		},
