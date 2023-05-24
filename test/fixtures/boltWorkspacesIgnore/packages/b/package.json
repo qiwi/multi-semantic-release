@@ -1,4 +1,3 @@
-
 {
 	"name": "msr-test-b",
 	"version": "0.0.0",
@@ -6,7 +5,7 @@
 		"msr-test-a": "*"
 	},
 	"devDependencies": {
-		"msr-test-c": "*",
+		"msr-test-d": "*",
 		"left-pad": "latest"
 	}
 }

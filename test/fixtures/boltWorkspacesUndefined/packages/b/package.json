@@ -5,7 +5,7 @@
 		"msr-test-a": "*"
 	},
 	"devDependencies": {
-		"msr-test-c": "*",
+		"msr-test-d": "*",
 		"left-pad": "latest"
 	}
 }

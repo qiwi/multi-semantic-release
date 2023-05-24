@@ -3,7 +3,6 @@
 import meow from "meow";
 import process from "process";
 import { toPairs, set } from "lodash-es";
-import runner from "./runner.js";
 
 const cli = meow(
 	`
@@ -84,7 +83,7 @@ const processFlags = (flags) => {
 			return set(m, k, v.split(","));
 		}
 
-		// FIXME Smth wrong with negate parser.
+		// FIXME Something is wrong with the default negate parser.
 		if (flags[`no${k[0].toUpperCase()}${k.slice(1)}`]) {
 			flags[k] = false;
 			return set(m, k, false);
@@ -92,6 +91,31 @@ const processFlags = (flags) => {
 
 		return set(m, k, v);
 	}, {});
+};
+
+const runner = async (cliFlags) => {
+	// Catch errors.
+	try {
+		// Imports.
+		const multiSemanticRelease = (await import("../lib/multiSemanticRelease.js")).default;
+
+		// Do multirelease (log out any errors).
+		multiSemanticRelease(null, {}, {}, cliFlags).then(
+			() => {
+				// Success.
+				process.exit(0);
+			},
+			(error) => {
+				// Log out errors.
+				console.error(`[multi-semantic-release]:`, error);
+				process.exit(1);
+			}
+		);
+	} catch (error) {
+		// Log out errors.
+		console.error(`[multi-semantic-release]:`, error);
+		process.exit(1);
+	}
 };
 
 runner(processFlags(cli.flags));
