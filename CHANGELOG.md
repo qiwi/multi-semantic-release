@@ -1,3 +1,10 @@
+## [6.6.1](https://github.com/qiwi/multi-semantic-release/compare/v6.6.0...v6.6.1) (2023-05-25)
+
+
+### Performance Improvements
+
+* up deps ([f9e0c8a](https://github.com/qiwi/multi-semantic-release/commit/f9e0c8ac19aa986d6f4ce808b0520c33699564e0))
+
 # [6.6.0](https://github.com/qiwi/multi-semantic-release/compare/v6.5.1...v6.6.0) (2023-05-23)
 
 
