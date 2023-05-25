@@ -1,3 +1,10 @@
+# [6.7.0](https://github.com/qiwi/multi-semantic-release/compare/v6.6.1...v6.7.0) (2023-05-25)
+
+
+### Features
+
+* introduce `log-level` config option ([3fb6584](https://github.com/qiwi/multi-semantic-release/commit/3fb6584eeb19d4401dbdb85ae41d5a48d978d88c))
+
 ## [6.6.1](https://github.com/qiwi/multi-semantic-release/compare/v6.6.0...v6.6.1) (2023-05-25)
 
 
