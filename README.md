@@ -143,8 +143,11 @@ $ multi-semantic-release --ignore-packages=packages/b/**,packages/c/**
 
 You can also combine the CLI ignore options with the `!` operator at each package inside `workspaces` attribute. Even though you can use the CLI to ignore options, you can't use it to set which packages to be released – i.e. you still need to set the `workspaces` attribute inside the `package.json`.
 
-## Verified examples
+## Verified usage examples
 We use this tool to release our JS platform code inhouse (GitHub Enterprise + JB TeamCity) and for our OSS (GitHub + Travis CI). Guaranteed working configurations available in projects.
 * [qiwi/substrate](https://github.com/qiwi/substrate)
 * [qiwi/json-rpc](https://github.com/qiwi/json-rpc)
 * [qiwi/lint-config-qiwi](https://github.com/qiwi/lint-config-qiwi)
+
+## License
+[0BSD](./LICENSE.md)
