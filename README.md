@@ -36,19 +36,20 @@ Alternatively some options may be set via CLI flags.
 
 ### Options
 
-| Option | Type | CLI Flag | Description |
-| ------ | ---- | -------- | ----------- |
-| dryRun | `boolean` | `--dry-run` | Dry run mode. |
-| debug | `boolean` | `--debug` | Output debugging information. |
-| silent | `boolean` | `--silent` | Do not print configuration information. |
-| extends | `String \| Array` | N/A | List of modules or file paths containing a shareable configuration. If multiple shareable configurations are set, they will be imported in the order defined with each configuration option taking precedence over the options defined in the previous. |
-| sequentialInit | `boolean` | `--sequential-init` | Avoid hypothetical concurrent initialization collisions. |
-| sequentialPrepare | `boolean` | `--sequential-prepare` | Avoid hypothetical concurrent preparation collisions. **True by default.** |
-| firstParent | `boolean` | `--first-parent` | Apply commit filtering to current branch only. |
-| ignorePrivate | `boolean` | `--ignore-private` | Exclude private packages. **True by default.** |
-| ignorePackages | `String \| Array` | `--ignore-packages` | Packages list to be ignored on bumping process (appended to the ones that already exist at package.json workspaces). If using the CLI flag, supply a comma seperated list of strings. |
-| tagFormat | `String` | `--tag-format` | Format to use when creating tag names. Should include "name" and "version" vars. Default: `"${name}@${version}"` which generates "package-name@1.0.0" |
-| deps | `Object` | N/A | Depedency handling, see below for possible values. |
+| Option            | Type              | CLI Flag               | Description                                                                                                                                                                                                                                             |
+|-------------------|-------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| dryRun            | `boolean`         | `--dry-run`            | Dry run mode.                                                                                                                                                                                                                                           |
+| logLevel          | `String`          | `--log-level`          | Sets the internal logger verbosity level: `error, warn, info, debug, trace`. Defaults to `info`.                                                                                                                                                        |
+| debug             | `boolean`         | `--debug`              | Output debugging information. Shortcut for `--logLevel=debug`.                                                                                                                                                                                          |
+| silent            | `boolean`         | `--silent`             | Do not print configuration information. Shortcut for `--logLevel=error`.                                                                                                                                                                                |
+| extends           | `String \| Array` | N/A                    | List of modules or file paths containing a shareable configuration. If multiple shareable configurations are set, they will be imported in the order defined with each configuration option taking precedence over the options defined in the previous. |
+| sequentialInit    | `boolean`         | `--sequential-init`    | Avoid hypothetical concurrent initialization collisions.                                                                                                                                                                                                |
+| sequentialPrepare | `boolean`         | `--sequential-prepare` | Avoid hypothetical concurrent preparation collisions. **True by default.**                                                                                                                                                                              |
+| firstParent       | `boolean`         | `--first-parent`       | Apply commit filtering to current branch only.                                                                                                                                                                                                          |
+| ignorePrivate     | `boolean`         | `--ignore-private`     | Exclude private packages. **True by default.**                                                                                                                                                                                                          |
+| ignorePackages    | `String \| Array` | `--ignore-packages`    | Packages list to be ignored on bumping process (appended to the ones that already exist at package.json workspaces). If using the CLI flag, supply a comma seperated list of strings.                                                                   |
+| tagFormat         | `String`          | `--tag-format`         | Format to use when creating tag names. Should include "name" and "version" vars. Default: `"${name}@${version}"` which generates "package-name@1.0.0"                                                                                                   |
+| deps              | `Object`          | N/A                    | Dependency handling, see below for possible values.                                                                                                                                                                                                     |
 
 ### `deps` Options
 
