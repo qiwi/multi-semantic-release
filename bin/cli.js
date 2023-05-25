@@ -3,6 +3,7 @@
 import meow from "meow";
 import process from "process";
 import { toPairs, set } from "lodash-es";
+import { logger } from "../lib/logger.js";
 
 const cli = meow(
 	`
@@ -107,13 +108,13 @@ const runner = async (cliFlags) => {
 			},
 			(error) => {
 				// Log out errors.
-				console.error(`[multi-semantic-release]:`, error);
+				logger.error(`[multi-semantic-release]:`, error);
 				process.exit(1);
 			}
 		);
 	} catch (error) {
 		// Log out errors.
-		console.error(`[multi-semantic-release]:`, error);
+		logger.error(`[multi-semantic-release]:`, error);
 		process.exit(1);
 	}
 };
