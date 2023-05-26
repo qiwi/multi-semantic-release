@@ -10,6 +10,11 @@ This fork of [dhoub/multi-semantic-release](https://github.com/dhoulb/multi-sema
 and [`execa.sync` hooks](https://github.com/dhoulb/multi-semantic-release/blob/561a8e66133d422d88008c32c479d1148876aba4/lib/execaHook.js#L5) with event-driven flow and finally makes possible to run the most release operations in parallel.  
 🎉 🎉 🎉
 
+
+## Status
+We're still using this lib as a part of our release infra, but we're gradually migrating to [bulk-release](https://github.com/semrel-extra/zx-bulk-release).
+This means that we do not have many resources to develop this implementation actively, but we will continue to do it on a leftover basis.
+
 ## Install
 
 ```sh
