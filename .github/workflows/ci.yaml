@@ -11,7 +11,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: yarn
 
       - name: Unit test only
@@ -43,7 +43,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-22.04 ]
-        node-version: [ 14, 16, 20 ]
+        node-version: [ 18, 20 ]
     name: Test (Node v${{ matrix.node-version }}, OS ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     steps:
@@ -54,9 +54,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - name: Test only
-        if: matrix.node-version != '16' || matrix.os != 'ubuntu-22.04'
+        if: matrix.node-version != '18' || matrix.os != 'ubuntu-22.04'
         run: yarn test
 
       - name: Test & push coverage
-        if: matrix.node-version == '16' && matrix.os == 'ubuntu-22.04'
+        if: matrix.node-version == '18' && matrix.os == 'ubuntu-22.04'
         run: yarn test
