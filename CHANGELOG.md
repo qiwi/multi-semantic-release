@@ -1,3 +1,15 @@
+# [7.0.0](https://github.com/qiwi/multi-semantic-release/compare/v6.7.0...v7.0.0) (2023-06-24)
+
+
+### Features
+
+* update semver from v19 to v21 ([6e4c378](https://github.com/qiwi/multi-semantic-release/commit/6e4c378cd97edd08a6da7de8e5894493bc6f9b34))
+
+
+### BREAKING CHANGES
+
+* https://github.com/semantic-release/semantic-release/compare/v19.0.5...v21.0.5
+
 # [6.7.0](https://github.com/qiwi/multi-semantic-release/compare/v6.6.1...v6.7.0) (2023-05-25)
 
 
