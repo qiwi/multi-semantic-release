@@ -1,11 +1,26 @@
-import {
-	resolveReleaseType,
+import { beforeAll, beforeEach, jest } from "@jest/globals";
+jest.unstable_mockModule("../../lib/git.js", () => ({
+	getTags: jest.fn(),
+}));
+let resolveReleaseType,
 	resolveNextVersion,
 	getNextVersion,
 	getNextPreVersion,
 	getPreReleaseTag,
 	getVersionFromTag,
-} from "../../lib/updateDeps.js";
+	getTags;
+
+beforeAll(async () => {
+	({ getTags } = await import("../../lib/git.js"));
+	({
+		resolveReleaseType,
+		resolveNextVersion,
+		getNextVersion,
+		getNextPreVersion,
+		getPreReleaseTag,
+		getVersionFromTag,
+	} = await import("../../lib/updateDeps.js"));
+});
 
 describe("resolveNextVersion()", () => {
 	// prettier-ignore
@@ -201,6 +216,9 @@ describe("getNextVersion()", () => {
 });
 
 describe("getNextPreVersion()", () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
 	// prettier-ignore
 	const cases = [
 		[undefined, "patch", "rc", [], "1.0.0-rc.1"],
@@ -226,10 +244,77 @@ describe("getNextPreVersion()", () => {
 					_nextType: releaseType,
 					_lastRelease: {version: lastVersion},
 					_preRelease: preRelease,
-          _branch: "master",
-          name: "testing-package"
+					_branch: "master",
+					name: "testing-package"
 				},
-				lastTags
+				{
+					tags: lastTags,
+				}
+			)).toBe(nextVersion);
+		});
+		it(`${lastVersion} and ${releaseType} ${
+			lastTags.length ? "with looked up branch tags " : ""
+		}gives ${nextVersion}`, () => {
+			getTags.mockImplementation(() => {
+				return lastTags;
+			});
+			// prettier-ignore
+			expect(getNextPreVersion(
+				{
+					_nextType: releaseType,
+					_lastRelease: {version: lastVersion},
+					_preRelease: preRelease,
+					_branch: "master",
+					name: "testing-package"
+				},
+				{
+					useGitTags: true,
+				}
+			)).toBe(nextVersion);
+			expect(getTags).toHaveBeenCalledTimes(1);
+		});
+	});
+	it("does not allow tags and useGitTags", () => {
+		expect(() =>
+			getNextPreVersion(
+				{
+					_nextType: "patch",
+					_lastRelease: { version: "1.0.0" },
+					_preRelease: "dev",
+					_branch: "master",
+					name: "testing-package",
+				},
+				{
+					useGitTags: true,
+					tags: [],
+				}
+			)
+		).toThrowError("You can only separately provide a set of tags or specify useGitTags!");
+	});
+	// Simulates us not using tags as criteria
+
+	const noTagCases = [
+		// prerelease channels just bump up the pre-release
+		["1.0.0-rc.0", "minor", "rc", "1.0.0-rc.1"],
+		["1.0.0-dev.0", "major", "dev", "1.0.0-dev.1"],
+		["1.0.0-dev.0", "major", "dev", "1.0.0-dev.1"],
+		["1.0.1-dev.0", "major", "dev", "1.0.1-dev.1"],
+		// main channels obey the release type
+		["11.0.0", "major", "beta", "12.0.0-beta.1"],
+		["1.0.0", "minor", "beta", "1.1.0-beta.1"],
+		["1.0.0", "patch", "beta", "1.0.1-beta.1"],
+	];
+	noTagCases.forEach(([lastVersion, releaseType, preRelease, nextVersion]) => {
+		it(`${lastVersion} and ${releaseType} for channel ${preRelease} gives ${nextVersion}`, () => {
+			// prettier-ignore
+			expect(getNextPreVersion(
+				{
+					_nextType: releaseType,
+					_lastRelease: {version: lastVersion},
+					_preRelease: preRelease,
+					_branch: "master",
+					name: "testing-package"
+				},
 			)).toBe(nextVersion);
 		});
 	});
