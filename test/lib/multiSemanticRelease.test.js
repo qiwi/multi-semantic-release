@@ -1,9 +1,9 @@
-import { writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { createRequire } from "module";
 import { jest } from "@jest/globals";
 
 import { WritableStreamBuffer } from "stream-buffers";
-import { copyDirectory, createNewTestingFiles } from "../helpers/file.js";
+import { addPrereleaseToPackageRootConfig, copyDirectory, createNewTestingFiles } from "../helpers/file.js";
 import { gitInit, gitAdd, gitCommit, gitCommitAll, gitInitOrigin, gitPush, gitTag, gitGetLog } from "../helpers/git";
 import multiSemanticRelease from "../../lib/multiSemanticRelease.js";
 
@@ -779,6 +779,571 @@ describe("multiSemanticRelease()", () => {
 		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
 			devDependencies: {
 				"msr-test-b": "1.0.1",
+				"msr-test-d": "1.0.0",
+			},
+		});
+	});
+
+	// Bug state that we need to ensure doesn't happen again
+	test("Changes in some packages with correct prerelease bumping from stable", async () => {
+		const preReleaseBranch = "alpha";
+		// Create Git repo.
+		const cwd = gitInit(preReleaseBranch);
+		// Initial commit.
+		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		addPrereleaseToPackageRootConfig(cwd, preReleaseBranch);
+
+		const sha1 = gitCommitAll(cwd, "feat: Initial release");
+		gitTag(cwd, "msr-test-a@1.0.0");
+		gitTag(cwd, "msr-test-b@1.0.0");
+		gitTag(cwd, "msr-test-c@1.0.0");
+		gitTag(cwd, "msr-test-d@1.0.0");
+		// Second commit.
+		writeFileSync(`${cwd}/packages/a/aaa.txt`, "AAA");
+		const sha2 = gitCommitAll(cwd, "feat(aaa): Add missing text file");
+		const url = gitInitOrigin(cwd);
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const result = await multiSemanticRelease(
+			[
+				`packages/d/package.json`,
+				`packages/b/package.json`,
+				`packages/a/package.json`,
+				`packages/c/package.json`,
+			],
+			{},
+			{ cwd, stdout, stderr, env },
+			{ deps: {}, dryRun: false }
+		);
+
+		// Get stdout and stderr output.
+		const err = stderr.getContentsAsString("utf8");
+		expect(err).toBe(false);
+		const out = stdout.getContentsAsString("utf8");
+		expect(out).toMatch("Started multirelease! Loading 4 packages...");
+		expect(out).toMatch("Loaded package msr-test-a");
+		expect(out).toMatch("Loaded package msr-test-b");
+		expect(out).toMatch("Loaded package msr-test-c");
+		expect(out).toMatch("Loaded package msr-test-d");
+		expect(out).toMatch("Queued 4 packages! Starting release...");
+		expect(out).toMatch(`Created tag msr-test-a@1.1.0-${preReleaseBranch}.1`);
+		expect(out).toMatch(`Created tag msr-test-b@1.0.1-${preReleaseBranch}.1`);
+		expect(out).toMatch(`Created tag msr-test-c@1.0.1-${preReleaseBranch}.1`);
+		expect(out).toMatch("There are no relevant changes, so no new version is released");
+		expect(out).toMatch("Released 3 of 4 packages, semantically!");
+
+		// A.
+		expect(result[0].name).toBe("msr-test-a");
+		expect(result[0].result.lastRelease).toMatchObject({
+			gitHead: sha1,
+			gitTag: "msr-test-a@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[0].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-a@1.1.0-${preReleaseBranch}.1`,
+			type: "minor",
+			version: `1.1.0-${preReleaseBranch}.1`,
+		});
+		expect(result[0].result.nextRelease.notes).toMatch(`# msr-test-a [1.1.0-${preReleaseBranch}.1]`);
+		expect(result[0].result.nextRelease.notes).toMatch("### Features\n\n* **aaa:** Add missing text file");
+		// expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
+
+		// B.
+		expect(result[2].name).toBe("msr-test-b");
+		expect(result[2].result.lastRelease).toEqual({
+			channels: [null],
+			gitHead: sha1,
+			gitTag: "msr-test-b@1.0.0",
+			name: "msr-test-b@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[2].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-b@1.0.1-${preReleaseBranch}.1`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result[2].result.nextRelease.notes).toMatch(`# msr-test-b [1.0.1-${preReleaseBranch}.1]`);
+		expect(result[2].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result[2].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-a:** upgraded to 1.1.0");
+
+		// C.
+		expect(result[3].name).toBe("msr-test-c");
+		expect(result[3].result.lastRelease).toEqual({
+			channels: [null],
+			gitHead: sha1,
+			gitTag: "msr-test-c@1.0.0",
+			name: "msr-test-c@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[3].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-c@1.0.1-${preReleaseBranch}.1`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result[3].result.nextRelease.notes).toMatch(`# msr-test-c [1.0.1-${preReleaseBranch}.1]`);
+		expect(result[3].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result[3].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.1");
+
+		// D.
+		expect(result[1].name).toBe("msr-test-d");
+		expect(result[1].result).toBe(false);
+
+		// ONLY four times.
+		expect(result[4]).toBe(undefined);
+
+		// Check manifests.
+		expect(require(`${cwd}/packages/a/package.json`)).toMatchObject({
+			peerDependencies: {
+				"left-pad": "latest",
+			},
+		});
+		expect(require(`${cwd}/packages/b/package.json`)).toMatchObject({
+			dependencies: {
+				"msr-test-a": `1.1.0-${preReleaseBranch}.1`,
+			},
+			devDependencies: {
+				"msr-test-d": "1.0.0",
+				"left-pad": "latest",
+			},
+		});
+		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
+			devDependencies: {
+				"msr-test-b": `1.0.1-${preReleaseBranch}.1`,
+				"msr-test-d": "1.0.0",
+			},
+		});
+
+		// Commit this like the git plugin would (with a skippable syntax)
+		gitCommitAll(cwd, "docs(release): Release everything");
+
+		// Release a second time to verify prerelease incrementation
+		writeFileSync(`${cwd}/packages/a/bbb.txt`, "BBB");
+		const sha3 = gitCommitAll(cwd, "feat(bbb): Add missing text file");
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout2 = new WritableStreamBuffer();
+		const stderr2 = new WritableStreamBuffer();
+
+		// NOTE: we call this again because we want to verify semantic-release
+		//       channel tagging instead of simulating
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const result2 = await multiSemanticRelease(
+			[
+				`packages/d/package.json`,
+				`packages/b/package.json`,
+				`packages/a/package.json`,
+				`packages/c/package.json`,
+			],
+			{},
+			{ cwd, stdout: stdout2, stderr: stderr2, env },
+			{ deps: {}, dryRun: false }
+		);
+
+		// Get stdout and stderr output.
+		const err2 = stderr2.getContentsAsString("utf8");
+		expect(err2).toBe(false);
+		const out2 = stdout2.getContentsAsString("utf8");
+		expect(out2).toMatch("Started multirelease! Loading 4 packages...");
+		expect(out2).toMatch("Loaded package msr-test-a");
+		expect(out2).toMatch("Loaded package msr-test-b");
+		expect(out2).toMatch("Loaded package msr-test-c");
+		expect(out2).toMatch("Loaded package msr-test-d");
+		expect(out2).toMatch("Queued 4 packages! Starting release...");
+		expect(out2).toMatch(`Created tag msr-test-a@1.1.0-${preReleaseBranch}.2`);
+		// Default behavior minor bumps
+		expect(out2).toMatch(`Created tag msr-test-b@1.0.1-${preReleaseBranch}.2`);
+		expect(out2).toMatch(`Created tag msr-test-c@1.0.1-${preReleaseBranch}.2`);
+		expect(out2).toMatch("There are no relevant changes, so no new version is released");
+		expect(out2).toMatch("Released 3 of 4 packages, semantically!");
+
+		// A.
+		expect(result2[0].name).toBe("msr-test-a");
+		expect(result2[0].result.lastRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-a@1.1.0-${preReleaseBranch}.1`,
+			version: `1.1.0-${preReleaseBranch}.1`,
+		});
+		expect(result2[0].result.nextRelease).toMatchObject({
+			gitHead: sha3,
+			gitTag: `msr-test-a@1.1.0-${preReleaseBranch}.2`,
+			type: "minor",
+			version: `1.1.0-${preReleaseBranch}.2`,
+		});
+		expect(result2[0].result.nextRelease.notes).toMatch(`# msr-test-a [1.1.0-${preReleaseBranch}.2]`);
+		expect(result2[0].result.nextRelease.notes).toMatch("### Features\n\n* **bbb:** Add missing text file");
+		// expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
+
+		// B.
+		expect(result2[2].name).toBe("msr-test-b");
+		expect(result2[2].result.lastRelease).toEqual({
+			channels: [preReleaseBranch],
+			gitHead: sha2,
+			gitTag: `msr-test-b@1.0.1-${preReleaseBranch}.1`,
+			name: `msr-test-b@1.0.1-${preReleaseBranch}.1`,
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result2[2].result.nextRelease).toMatchObject({
+			gitHead: sha3,
+			gitTag: `msr-test-b@1.0.1-${preReleaseBranch}.2`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.2`,
+		});
+		expect(result2[2].result.nextRelease.notes).toMatch(`# msr-test-b [1.0.1-${preReleaseBranch}.2]`);
+		expect(result2[2].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result2[2].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result2[2].result.nextRelease.notes).toMatch(
+			`### Dependencies\n\n* **msr-test-a:** upgraded to 1.1.0-${preReleaseBranch}.2`
+		);
+
+		// C.
+		expect(result2[3].name).toBe("msr-test-c");
+		expect(result2[3].result.lastRelease).toEqual({
+			channels: [preReleaseBranch],
+			gitHead: sha2,
+			gitTag: `msr-test-c@1.0.1-${preReleaseBranch}.1`,
+			name: `msr-test-c@1.0.1-${preReleaseBranch}.1`,
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result2[3].result.nextRelease).toMatchObject({
+			gitHead: sha3,
+			gitTag: `msr-test-c@1.0.1-${preReleaseBranch}.2`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.2`,
+		});
+		expect(result2[3].result.nextRelease.notes).toMatch(`# msr-test-c [1.0.1-${preReleaseBranch}.2]`);
+		expect(result2[3].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result2[3].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result2[3].result.nextRelease.notes).toMatch(
+			`### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.1-${preReleaseBranch}.2`
+		);
+
+		// D.
+		expect(result2[1].name).toBe("msr-test-d");
+		expect(result2[1].result).toBe(false);
+
+		// ONLY four times.
+		expect(result2[4]).toBe(undefined);
+
+		// Check manifests.
+		expect(JSON.parse(readFileSync(`${cwd}/packages/a/package.json`).toString())).toMatchObject({
+			peerDependencies: {
+				"left-pad": "latest",
+			},
+		});
+		expect(JSON.parse(readFileSync(`${cwd}/packages/b/package.json`).toString())).toMatchObject({
+			dependencies: {
+				"msr-test-a": `1.1.0-${preReleaseBranch}.2`,
+			},
+			devDependencies: {
+				"msr-test-d": "1.0.0",
+				"left-pad": "latest",
+			},
+		});
+		expect(JSON.parse(readFileSync(`${cwd}/packages/c/package.json`).toString())).toMatchObject({
+			devDependencies: {
+				"msr-test-b": `1.0.1-${preReleaseBranch}.2`,
+				"msr-test-d": "1.0.0",
+			},
+		});
+	});
+
+	// Bug state that we want to keep for now in case of other people who have triaged it
+	test("Changes in some packages with bugged prerelease bumping (useTagsForBump: true)", async () => {
+		const preReleaseBranch = "alpha";
+		// Create Git repo.
+		const cwd = gitInit(preReleaseBranch);
+		// Initial commit.
+		copyDirectory(`test/fixtures/yarnWorkspaces/`, cwd);
+		addPrereleaseToPackageRootConfig(cwd, preReleaseBranch);
+
+		const sha1 = gitCommitAll(cwd, "feat: Initial release");
+		gitTag(cwd, "msr-test-a@1.0.0");
+		gitTag(cwd, "msr-test-b@1.0.0");
+		gitTag(cwd, "msr-test-c@1.0.0");
+		gitTag(cwd, "msr-test-d@1.0.0");
+		// Second commit.
+		writeFileSync(`${cwd}/packages/a/aaa.txt`, "AAA");
+		const sha2 = gitCommitAll(cwd, "feat(aaa): Add missing text file");
+		const url = gitInitOrigin(cwd);
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout = new WritableStreamBuffer();
+		const stderr = new WritableStreamBuffer();
+
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const result = await multiSemanticRelease(
+			[
+				`packages/d/package.json`,
+				`packages/b/package.json`,
+				`packages/a/package.json`,
+				`packages/c/package.json`,
+			],
+			{},
+			{ cwd, stdout, stderr, env },
+			{
+				deps: {
+					useTagsForBump: true,
+				},
+				dryRun: false,
+			}
+		);
+
+		// Get stdout and stderr output.
+		const err = stderr.getContentsAsString("utf8");
+		expect(err).toBe(false);
+		const out = stdout.getContentsAsString("utf8");
+		expect(out).toMatch("Started multirelease! Loading 4 packages...");
+		expect(out).toMatch("Loaded package msr-test-a");
+		expect(out).toMatch("Loaded package msr-test-b");
+		expect(out).toMatch("Loaded package msr-test-c");
+		expect(out).toMatch("Loaded package msr-test-d");
+		expect(out).toMatch("Queued 4 packages! Starting release...");
+		expect(out).toMatch(`Created tag msr-test-a@1.1.0-${preReleaseBranch}.1`);
+		expect(out).toMatch(`Created tag msr-test-b@1.0.1-${preReleaseBranch}.1`);
+		expect(out).toMatch(`Created tag msr-test-c@1.0.1-${preReleaseBranch}.1`);
+		expect(out).toMatch("There are no relevant changes, so no new version is released");
+		expect(out).toMatch("Released 3 of 4 packages, semantically!");
+
+		// A.
+		expect(result[0].name).toBe("msr-test-a");
+		expect(result[0].result.lastRelease).toMatchObject({
+			gitHead: sha1,
+			gitTag: "msr-test-a@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[0].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-a@1.1.0-${preReleaseBranch}.1`,
+			type: "minor",
+			version: `1.1.0-${preReleaseBranch}.1`,
+		});
+		expect(result[0].result.nextRelease.notes).toMatch(`# msr-test-a [1.1.0-${preReleaseBranch}.1]`);
+		expect(result[0].result.nextRelease.notes).toMatch("### Features\n\n* **aaa:** Add missing text file");
+		// expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
+
+		// B.
+		expect(result[2].name).toBe("msr-test-b");
+		expect(result[2].result.lastRelease).toEqual({
+			channels: [null],
+			gitHead: sha1,
+			gitTag: "msr-test-b@1.0.0",
+			name: "msr-test-b@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[2].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-b@1.0.1-${preReleaseBranch}.1`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result[2].result.nextRelease.notes).toMatch(`# msr-test-b [1.0.1-${preReleaseBranch}.1]`);
+		expect(result[2].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result[2].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result[2].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-a:** upgraded to 1.1.0");
+
+		// C.
+		expect(result[3].name).toBe("msr-test-c");
+		expect(result[3].result.lastRelease).toEqual({
+			channels: [null],
+			gitHead: sha1,
+			gitTag: "msr-test-c@1.0.0",
+			name: "msr-test-c@1.0.0",
+			version: "1.0.0",
+		});
+		expect(result[3].result.nextRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-c@1.0.1-${preReleaseBranch}.1`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result[3].result.nextRelease.notes).toMatch(`# msr-test-c [1.0.1-${preReleaseBranch}.1]`);
+		expect(result[3].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result[3].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.1");
+
+		// D.
+		expect(result[1].name).toBe("msr-test-d");
+		expect(result[1].result).toBe(false);
+
+		// ONLY four times.
+		expect(result[4]).toBe(undefined);
+
+		// Check manifests.
+		expect(require(`${cwd}/packages/a/package.json`)).toMatchObject({
+			peerDependencies: {
+				"left-pad": "latest",
+			},
+		});
+		expect(require(`${cwd}/packages/b/package.json`)).toMatchObject({
+			dependencies: {
+				"msr-test-a": `1.1.0-${preReleaseBranch}.1`,
+			},
+			devDependencies: {
+				"msr-test-d": "1.0.0",
+				"left-pad": "latest",
+			},
+		});
+		expect(require(`${cwd}/packages/c/package.json`)).toMatchObject({
+			devDependencies: {
+				"msr-test-b": `1.0.1-${preReleaseBranch}.1`,
+				"msr-test-d": "1.0.0",
+			},
+		});
+
+		// Commit this like the git plugin would (with a skippable syntax)
+		gitCommitAll(cwd, "docs(release): Release everything");
+
+		// Release a second time to verify prerelease incrementation
+		writeFileSync(`${cwd}/packages/a/bbb.txt`, "BBB");
+		const sha3 = gitCommitAll(cwd, "feat(bbb): Add missing text file");
+		gitPush(cwd);
+
+		// Capture output.
+		const stdout2 = new WritableStreamBuffer();
+		const stderr2 = new WritableStreamBuffer();
+
+		// NOTE: we call this again because we want to verify semantic-release
+		//       channel tagging instead of simulating
+		// Call multiSemanticRelease()
+		// Doesn't include plugins that actually publish.
+		const result2 = await multiSemanticRelease(
+			[
+				`packages/d/package.json`,
+				`packages/b/package.json`,
+				`packages/a/package.json`,
+				`packages/c/package.json`,
+			],
+			{},
+			{ cwd, stdout: stdout2, stderr: stderr2, env },
+			{
+				deps: {
+					useTagsForBump: true,
+				},
+				dryRun: false,
+			}
+		);
+
+		// Get stdout and stderr output.
+		const err2 = stderr2.getContentsAsString("utf8");
+		expect(err2).toBe(false);
+		const out2 = stdout2.getContentsAsString("utf8");
+		expect(out2).toMatch("Started multirelease! Loading 4 packages...");
+		expect(out2).toMatch("Loaded package msr-test-a");
+		expect(out2).toMatch("Loaded package msr-test-b");
+		expect(out2).toMatch("Loaded package msr-test-c");
+		expect(out2).toMatch("Loaded package msr-test-d");
+		expect(out2).toMatch("Queued 4 packages! Starting release...");
+		expect(out2).toMatch(`Created tag msr-test-a@1.1.0-${preReleaseBranch}.2`);
+		// Default behavior minor bumps
+		expect(out2).toMatch(`Created tag msr-test-b@1.0.1-${preReleaseBranch}.2`);
+		expect(out2).toMatch(`Created tag msr-test-c@1.0.1-${preReleaseBranch}.2`);
+		expect(out2).toMatch("There are no relevant changes, so no new version is released");
+		expect(out2).toMatch("Released 3 of 4 packages, semantically!");
+
+		// A.
+		expect(result2[0].name).toBe("msr-test-a");
+		expect(result2[0].result.lastRelease).toMatchObject({
+			gitHead: sha2,
+			gitTag: `msr-test-a@1.1.0-${preReleaseBranch}.1`,
+			version: `1.1.0-${preReleaseBranch}.1`,
+		});
+		expect(result2[0].result.nextRelease).toMatchObject({
+			gitHead: sha3,
+			gitTag: `msr-test-a@1.1.0-${preReleaseBranch}.2`,
+			type: "minor",
+			version: `1.1.0-${preReleaseBranch}.2`,
+		});
+		expect(result2[0].result.nextRelease.notes).toMatch(`# msr-test-a [1.1.0-${preReleaseBranch}.2]`);
+		expect(result2[0].result.nextRelease.notes).toMatch("### Features\n\n* **bbb:** Add missing text file");
+		// expect(result[3].result.nextRelease.notes).toMatch("### Dependencies\n\n* **msr-test-c:** upgraded to 1.0.1");
+
+		// B.
+		expect(result2[2].name).toBe("msr-test-b");
+		expect(result2[2].result.lastRelease).toEqual({
+			channels: [preReleaseBranch],
+			gitHead: sha2,
+			gitTag: `msr-test-b@1.0.1-${preReleaseBranch}.1`,
+			name: `msr-test-b@1.0.1-${preReleaseBranch}.1`,
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result2[2].result.nextRelease).toMatchObject({
+			gitHead: sha3,
+			gitTag: `msr-test-b@1.0.1-${preReleaseBranch}.2`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.2`,
+		});
+		expect(result2[2].result.nextRelease.notes).toMatch(`# msr-test-b [1.0.1-${preReleaseBranch}.2]`);
+		expect(result2[2].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result2[2].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result2[2].result.nextRelease.notes).toMatch(
+			`### Dependencies\n\n* **msr-test-a:** upgraded to 1.1.0-${preReleaseBranch}.2`
+		);
+
+		// C.
+		expect(result2[3].name).toBe("msr-test-c");
+		expect(result2[3].result.lastRelease).toEqual({
+			channels: [preReleaseBranch],
+			gitHead: sha2,
+			gitTag: `msr-test-c@1.0.1-${preReleaseBranch}.1`,
+			name: `msr-test-c@1.0.1-${preReleaseBranch}.1`,
+			version: `1.0.1-${preReleaseBranch}.1`,
+		});
+		expect(result2[3].result.nextRelease).toMatchObject({
+			gitHead: sha3,
+			gitTag: `msr-test-c@1.0.1-${preReleaseBranch}.2`,
+			type: "patch",
+			version: `1.0.1-${preReleaseBranch}.2`,
+		});
+		expect(result2[3].result.nextRelease.notes).toMatch(`# msr-test-c [1.0.1-${preReleaseBranch}.2]`);
+		expect(result2[3].result.nextRelease.notes).not.toMatch("### Features");
+		expect(result2[3].result.nextRelease.notes).not.toMatch("### Bug Fixes");
+		expect(result2[3].result.nextRelease.notes).toMatch(
+			`### Dependencies\n\n* **msr-test-b:** upgraded to 1.0.1-${preReleaseBranch}.2`
+		);
+
+		// D.
+		expect(result2[1].name).toBe("msr-test-d");
+		expect(result2[1].result).toBe(false);
+
+		// ONLY four times.
+		expect(result2[4]).toBe(undefined);
+
+		const pkgA = JSON.parse(readFileSync(`${cwd}/packages/a/package.json`).toString());
+		const pkgB = JSON.parse(readFileSync(`${cwd}/packages/b/package.json`).toString());
+		const pkgC = JSON.parse(readFileSync(`${cwd}/packages/c/package.json`).toString());
+		// Check manifests. (They have non-existent state)
+		expect(JSON.parse(readFileSync(`${cwd}/packages/a/package.json`).toString())).toMatchObject({
+			peerDependencies: {
+				"left-pad": "latest",
+			},
+		});
+		expect(JSON.parse(readFileSync(`${cwd}/packages/b/package.json`).toString())).toMatchObject({
+			dependencies: {
+				"msr-test-a": `1.1.0-${preReleaseBranch}.3`,
+			},
+			devDependencies: {
+				"msr-test-d": "1.0.0",
+				"left-pad": "latest",
+			},
+		});
+		expect(JSON.parse(readFileSync(`${cwd}/packages/c/package.json`).toString())).toMatchObject({
+			devDependencies: {
+				"msr-test-b": `1.0.1-${preReleaseBranch}.3`,
 				"msr-test-d": "1.0.0",
 			},
 		});
