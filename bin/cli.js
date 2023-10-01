@@ -20,6 +20,7 @@ const cli = meow(
     --deps.bump Define deps version updating rule. Allowed: override, satisfy, inherit.
     --deps.release Define release type for dependent package if any of its deps changes. Supported values: patch, minor, major, inherit.
     --deps.prefix Optional prefix to be attached to the next dep version if '--deps.bump' set to 'override'. Supported values: '^' | '~' | '' (empty string as default).
+	--deps.useTagsForBump Optional flag to skip using release tags for evaluating prerelease version bumping.  This is almost always the correct option since semantic-relesae will be creating tags for every dependency and it would lead to us bumping to a non-existent version.  Set to false if you've already compensated for this in your workflow previously (true as default)
     --ignore-packages  Packages list to be ignored on bumping process
     --ignore-private Exclude private packages. Enabled by default, pass 'no-ignore-private' to disable.
     --tag-format Format to use for creating tag names. Should include "name" and "version" vars. Default: "\${name}@\${version}" generates "package-name@1.0.0"
@@ -58,6 +59,9 @@ const cli = meow(
 			},
 			"deps.prefix": {
 				type: "string",
+			},
+			"deps.useTagsForBump": {
+				type: "boolean",
 			},
 			ignorePrivate: {
 				type: "boolean",

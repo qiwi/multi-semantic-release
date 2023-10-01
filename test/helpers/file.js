@@ -1,4 +1,4 @@
-import { basename, join } from "path";
+import { basename, join, resolve } from "path";
 import { copyFileSync, existsSync, mkdirSync, lstatSync, readdirSync, readFileSync, writeFileSync } from "fs";
 
 // Deep copy a directory.
@@ -44,5 +44,12 @@ function createNewTestingFiles(folders, cwd) {
 	});
 }
 
+function addPrereleaseToPackageRootConfig(rootDir, releaseBranch) {
+	const packageUri = resolve(join(rootDir, "package.json"));
+	const packageJson = JSON.parse(readFileSync(packageUri).toString());
+
+	packageJson.release.branches = ["master", { name: releaseBranch, prerelease: true }];
+}
+
 // Exports.
-export { copyDirectory, isDirectory, createNewTestingFiles };
+export { copyDirectory, isDirectory, createNewTestingFiles, addPrereleaseToPackageRootConfig };
