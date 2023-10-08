@@ -26,7 +26,7 @@
 		"lint": "eslint ./",
 		"lint:fix": "eslint --fix ./",
 		"test": "yarn lint && yarn test:unit",
-		"test:unit": "NODE_OPTIONS=--experimental-vm-modules ./node_modules/.bin/jest --coverage",
+		"test:unit": "NODE_OPTIONS=\"${NODE_OPTIONS} --experimental-vm-modules\" ./node_modules/.bin/jest --coverage",
 		"build": "echo 'There is no need for build' && exit 0",
 		"postupdate": "yarn && npx yarn-audit-fix && yarn build && yarn test",
 		"publish:beta": "npm publish --no-git-tag-version --tag beta"
