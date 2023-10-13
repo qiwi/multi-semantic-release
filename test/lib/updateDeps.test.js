@@ -246,7 +246,7 @@ describe("getNextPreVersion()", () => {
 					_preRelease: preRelease,
 					_branch: "master",
 					name: "testing-package",
-					useTagsForBump: true,
+					pullTagsForPrerelease: true,
 				},
 				lastTags,
 			)).toBe(nextVersion);
@@ -265,14 +265,14 @@ describe("getNextPreVersion()", () => {
 					_preRelease: preRelease,
 					_branch: "master",
 					name: "testing-package",
-					useTagsForBump: true,
+					pullTagsForPrerelease: true,
 				},
 				// No Tags array means we look them up
 			)).toBe(nextVersion);
 			expect(getTags).toHaveBeenCalledTimes(1);
 		});
 	});
-	it("does not allow tags if useTagsForBump = false", () => {
+	it("does not allow tags if pullTagsForPrerelease = false", () => {
 		expect(() =>
 			getNextPreVersion(
 				{
@@ -281,7 +281,7 @@ describe("getNextPreVersion()", () => {
 					_preRelease: "dev",
 					_branch: "master",
 					name: "testing-package",
-					useTagsForBump: false,
+					pullTagsForPrerelease: false,
 				},
 				[]
 			)
@@ -301,7 +301,7 @@ describe("getNextPreVersion()", () => {
 		["1.0.0", "patch", "beta", "1.0.1-beta.1"],
 	];
 	noTagCases.forEach(([lastVersion, releaseType, preRelease, nextVersion]) => {
-		it(`${lastVersion} and ${releaseType} for channel ${preRelease} gives ${nextVersion} when useTagsForBump = false`, () => {
+		it(`${lastVersion} and ${releaseType} for channel ${preRelease} gives ${nextVersion} when pullTagsForPrerelease = false`, () => {
 			// prettier-ignore
 			expect(getNextPreVersion(
 				{
@@ -310,7 +310,7 @@ describe("getNextPreVersion()", () => {
 					_preRelease: preRelease,
 					_branch: "master",
 					name: "testing-package",
-					useTagsForBump: false,
+					pullTagsForPrerelease: false,
 				},
 			)).toBe(nextVersion);
 		});

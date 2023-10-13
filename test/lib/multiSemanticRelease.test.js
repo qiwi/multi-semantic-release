@@ -1061,7 +1061,7 @@ describe("multiSemanticRelease()", () => {
 	});
 
 	// Bug state that we want to keep for now in case of other people who have triaged it
-	test("Changes in some packages with bugged prerelease bumping (useTagsForBump: true)", async () => {
+	test("Changes in some packages with bugged prerelease bumping (pullTagsForPrerelease: true)", async () => {
 		const preReleaseBranch = "alpha";
 		// Create Git repo.
 		const cwd = gitInit(preReleaseBranch);
@@ -1097,7 +1097,7 @@ describe("multiSemanticRelease()", () => {
 			{ cwd, stdout, stderr, env },
 			{
 				deps: {
-					useTagsForBump: true,
+					pullTagsForPrerelease: true,
 				},
 				dryRun: false,
 			}
@@ -1232,7 +1232,7 @@ describe("multiSemanticRelease()", () => {
 			{ cwd, stdout: stdout2, stderr: stderr2, env },
 			{
 				deps: {
-					useTagsForBump: true,
+					pullTagsForPrerelease: true,
 				},
 				dryRun: false,
 			}
