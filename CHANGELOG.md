@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/qiwi/multi-semantic-release/compare/v7.0.0...v7.1.0) (2023-10-16)
+
+
+### Features
+
+* adding dependent prerelease fix behind flag ([cc663d8](https://github.com/qiwi/multi-semantic-release/commit/cc663d87adb1074b28deb94c7b833bcc76fcc604))
+
 # [7.0.0](https://github.com/qiwi/multi-semantic-release/compare/v6.7.0...v7.0.0) (2023-06-24)
 
 
