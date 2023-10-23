@@ -1,3 +1,10 @@
+## [7.1.1](https://github.com/qiwi/multi-semantic-release/compare/v7.1.0...v7.1.1) (2023-10-23)
+
+
+### Performance Improvements
+
+* tech release to publish [#99](https://github.com/qiwi/multi-semantic-release/issues/99) ([34328e1](https://github.com/qiwi/multi-semantic-release/commit/34328e124616aae8ec506af02419a071357e6b4a))
+
 # [7.1.0](https://github.com/qiwi/multi-semantic-release/compare/v7.0.0...v7.1.0) (2023-10-16)
 
 
