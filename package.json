@@ -50,12 +50,12 @@
 		"testTimeout": 50000
 	},
 	"dependencies": {
-		"@semrel-extra/topo": "^1.13.0",
+		"@semrel-extra/topo": "^1.14.0",
 		"blork": "^9.3.0",
-		"cosmiconfig": "^8.2.0",
+		"cosmiconfig": "^8.3.6",
 		"debug": "^4.3.4",
 		"detect-indent": "^7.0.1",
-		"detect-newline": "^4.0.0",
+		"detect-newline": "^4.0.1",
 		"execa": "^7.1.1",
 		"get-stream": "^6.0.1",
 		"git-log-parser": "^1.2.0",
