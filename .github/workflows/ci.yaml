@@ -53,10 +53,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - name: Test only
-        if: matrix.node-version != '18' || matrix.os != 'ubuntu-22.04'
-        run: yarn test
 
-      - name: Test & push coverage
-        if: matrix.node-version == '18' && matrix.os == 'ubuntu-22.04'
+      - name: Run tests
         run: yarn test
