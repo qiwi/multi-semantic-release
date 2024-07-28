@@ -1,3 +1,10 @@
+## [7.1.2](https://github.com/qiwi/multi-semantic-release/compare/v7.1.1...v7.1.2) (2024-07-28)
+
+
+### Bug Fixes
+
+* bump release type by dependent if deps.release is inherit ([#100](https://github.com/qiwi/multi-semantic-release/issues/100)) ([d44f324](https://github.com/qiwi/multi-semantic-release/commit/d44f32485c841b66c71e1e8e03cd59e5e51ec32b))
+
 ## [7.1.1](https://github.com/qiwi/multi-semantic-release/compare/v7.1.0...v7.1.1) (2023-10-23)
 
 
