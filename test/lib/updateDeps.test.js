@@ -86,6 +86,29 @@ describe("resolveReleaseType()", () => {
 			"major"
 		],
 		[
+			"implements `inherit` strategy: returns the highest release type of any deps even if the local package has changes",
+			{
+				manifest: { dependencies: { a: "1.0.0" } },
+				_nextType: "minor",
+				localDeps: [
+					{
+						name: "a",
+						manifest: { dependencies: { b: "1.0.0", c: "1.0.0", d: "1.0.0" } },
+						_lastRelease: { version: "1.0.0" },
+						_nextType: false,
+						localDeps: [
+							{ name: "b", _nextType: false, localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "c", _nextType: "patch", localDeps: [], _lastRelease: { version: "1.0.0" }  },
+							{ name: "d", _nextType: "major", localDeps: [], _lastRelease: { version: "1.0.0" }  },
+						],
+					},
+				],
+			},
+			undefined,
+			"inherit",
+			"major"
+		],
+		[
 			"overrides dependent release type with custom value if defined",
 			{
 				manifest: { dependencies: { a: "1.0.0" } },
