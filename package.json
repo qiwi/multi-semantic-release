@@ -62,7 +62,6 @@
 		"git-log-parser": "^1.2.0",
 		"lodash-es": "^4.17.21",
 		"meow": "^13.2.0",
-		"promise-events": "^0.2.4",
 		"resolve-from": "^5.0.0",
 		"semantic-release": "^24.2.3",
 		"semver": "^7.5.3",
