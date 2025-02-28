@@ -7,6 +7,7 @@
 		"node": ">=14",
 		"yarn": ">=1.0.0"
 	},
+	"packageManager": "yarn@1.22.22",
 	"type": "module",
 	"exports": {
 		".": "./lib/multiSemanticRelease.js",
@@ -52,18 +53,17 @@
 	"dependencies": {
 		"@semrel-extra/topo": "^1.14.0",
 		"blork": "^9.3.0",
-		"cosmiconfig": "^8.3.6",
+		"cosmiconfig": "^9.0.0",
 		"debug": "^4.3.4",
 		"detect-indent": "^7.0.1",
 		"detect-newline": "^4.0.1",
-		"execa": "^7.1.1",
+		"execa": "^9.5.2",
 		"get-stream": "^6.0.1",
 		"git-log-parser": "^1.2.0",
 		"lodash-es": "^4.17.21",
-		"meow": "^12.0.1",
-		"promise-events": "^0.2.4",
+		"meow": "^13.2.0",
 		"resolve-from": "^5.0.0",
-		"semantic-release": "^21.0.5",
+		"semantic-release": "^24.2.3",
 		"semver": "^7.5.3",
 		"signale": "^1.4.0",
 		"stream-buffers": "^3.0.2"
