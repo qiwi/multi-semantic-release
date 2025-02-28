@@ -53,7 +53,7 @@
 	"dependencies": {
 		"@semrel-extra/topo": "^1.14.0",
 		"blork": "^9.3.0",
-		"cosmiconfig": "^8.3.6",
+		"cosmiconfig": "^9.0.0",
 		"debug": "^4.3.4",
 		"detect-indent": "^7.0.1",
 		"detect-newline": "^4.0.1",
