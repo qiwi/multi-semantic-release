@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
+import { set, toPairs } from "lodash-es";
 import meow from "meow";
 import process from "process";
-import { toPairs, set } from "lodash-es";
 import { logger } from "../lib/logger.js";
 
 const cli = meow(
@@ -76,6 +76,9 @@ const cli = meow(
 				type: "boolean",
 			},
 			silent: {
+				type: "boolean",
+			},
+			successComment: {
 				type: "boolean",
 			},
 		},
