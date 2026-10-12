@@ -27,7 +27,8 @@ jobs:
             ${{github.workspace}}/coverage/lcov.info:lcov
 
       - name: Release
-        if: github.ref == 'refs/heads/master'
+        if: false # publishing temporarily disabled
+        # if: github.ref == 'refs/heads/master'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USER: ${{ secrets.GH_USER }}
