@@ -40,6 +40,25 @@ describe("resolveNextVersion()", () => {
 		["*", "2.0.0", "inherit", "*"],
 		["~1.0", "2.0.0", "inherit", "~2.0"],
 		["~2.0", "2.1.0", "inherit", "~2.1"],
+
+		// workspace protocol (yarn, pnpm) is substituted with the actual version
+		["workspace:*", "1.0.1", undefined, "1.0.1"],
+		["workspace:*", "1.0.1", "override", "1.0.1"],
+		["workspace:^", "1.0.1", "override", "1.0.1"],
+
+		["workspace:*", "1.3.0", "satisfy", "1.3.0"],
+		["workspace:~", "1.0.1", "satisfy", "~1.0.1"],
+		["workspace:^", "1.3.0", "satisfy", "^1.3.0"],
+		["workspace:^1.0.0", "1.0.1", "satisfy", "^1.0.0"],
+		["workspace:^1.2.0", "1.3.0", "satisfy", "^1.2.0"],
+		["workspace:1.2.x", "1.2.2", "satisfy", "1.2.x"],
+
+		["workspace:*", "1.3.0", "inherit", "1.3.0"],
+		["workspace:~", "1.1.0", "inherit", "~1.1.0"],
+		["workspace:^", "2.0.0", "inherit", "^2.0.0"],
+		["workspace:~1.0.0", "1.1.0", "inherit", "~1.1.0"],
+		["workspace:1.2.x", "1.3.0", "inherit", "1.3.x"],
+		["workspace:^1.0.0", "2.0.0", "inherit", "^2.0.0"],
 	]
 
 	cases.forEach(([currentVersion, nextVersion, strategy, resolvedVersion]) => {
@@ -184,6 +203,22 @@ describe("resolveReleaseType()", () => {
 			expect(resolveReleaseType(pkg, bumpStrategy, releaseStrategy)).toBe(result);
 		});
 	});
+});
+
+it("`workspace:` deps trigger the dependent release and get substituted in the manifest", () => {
+	const pkgB = { name: "b", _nextType: "minor", localDeps: [], _lastRelease: { version: "1.0.0" } };
+	const pkgC = { name: "c", _nextType: "patch", localDeps: [], _lastRelease: { version: "1.0.0" } };
+	const pkg = {
+		name: "a",
+		manifest: { dependencies: { b: "workspace:*", c: "workspace:^" } },
+		_nextType: undefined,
+		localDeps: [pkgB, pkgC],
+	};
+
+	const type = resolveReleaseType(pkg, "override", "patch");
+
+	expect(type).toBe("patch");
+	expect(pkg.manifest.dependencies).toEqual({ b: "1.1.0", c: "1.0.1" });
 });
 
 it("`override` + `prefix` injects carets to the manifest", () => {
