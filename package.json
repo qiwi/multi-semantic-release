@@ -99,7 +99,13 @@
     "cross-spawn": "^7.0.5",
     "browserslist": "^4.28.7",
     "sigstore": "^4.1.1",
-    "socks": "^2.8.10"
+    "socks": "^2.8.10",
+    "**/picomatch": "^2.3.2",
+    "**/micromatch": "^4.0.8",
+    "**/postcss-selector-parser": "^7.1.6",
+    "**/@octokit/request": "^8.4.1",
+    "**/diff": "^5.2.2",
+    "**/@tootallnate/once": "^2.0.1"
   },
   "release": {
     "branch": "master",
